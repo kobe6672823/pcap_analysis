@@ -39,3 +39,8 @@ problem:
 solution：
     烦点的做法：把文件读入到一个string，然后a = string[0:2]，b = string[2:4]这样
     简洁的做法：利用struct的unpack函数
+
+-----------------------------------------------
+time:  2013/4/23
+tips:
+    python中如果要返回多个值，用tuple会很简洁方便～
