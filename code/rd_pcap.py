@@ -1,5 +1,5 @@
 #! /usr/bin/python
-#coding=utf-8
+# -*- coding: utf-8 -*-
 #try to read in pcap file, and print the data in it 
 
 import struct
@@ -9,7 +9,7 @@ def rd_pcap(pcap_file_name):
     return: pcap_header, packet_headers, packets"""
     
     try:
-        fpcap = open(pcap_file_name,  'rb')
+        fpcap = open(pcap_file_name, 'rb')
     except IOError, e:
         print e
         exit(1)
@@ -25,9 +25,9 @@ def rd_pcap(pcap_file_name):
     #snaplen为最大的存储长度（4个字节）
     #linktype为链路类型（4个字节）
     pcap_header = {}
-    pcap_header['magic'],  pcap_header['magor_version'],  pcap_header['minor_version'],  \
-    pcap_header['timezone'],  pcap_header['sigflags'],  pcap_header['snaplen'],  \
-    pcap_header['linktype'] = struct.unpack('4s2s2s4s4s4s4s',  string_data[0 : 24])
+    pcap_header['magic'], pcap_header['magor_version'], pcap_header['minor_version'], \
+    pcap_header['timezone'], pcap_header['sigflags'], pcap_header['snaplen'], \
+    pcap_header['linktype'] = struct.unpack('4s2s2s4s4s4s4s', string_data[0 : 24])
 
     packet_headers = []
     packets = []
@@ -38,8 +38,8 @@ def rd_pcap(pcap_file_name):
         #parse the packet_header
         #数据包头则依次为：时间戳（秒）、时间戳（微妙）、抓包长度和实际长度，依次各占4个字节。
         packet_header = {}
-        packet_header['timestamp_s'],  packet_header['timestamp_ms'],  packet_header['cap_len'],  packet_header['len'] = \
-        struct.unpack('IIII',  string_data[pos : pos+16])
+        packet_header['timestamp_s'], packet_header['timestamp_ms'], packet_header['cap_len'], packet_header['len'] = \
+        struct.unpack('IIII', string_data[pos : pos+16])
         pos += 16
         
         #get the packet data
@@ -55,7 +55,7 @@ def rd_pcap(pcap_file_name):
     return (pcap_header, packet_headers, packets)
 #endof def
 
-def print_pkt(pkt_headers,  pkts):
+def print_pkt(pkt_headers, pkts):
     "print the packet_headers and the packets which got from the pcap file"
     
     print "@@@@@@@@@@@@@@@@@   ready to print all the packet_headers and the packets in the pcap file   @@@@@@@@@@@@@@@@@"
@@ -70,5 +70,4 @@ def print_pkt(pkt_headers,  pkts):
     #endof for
     print "@@@@@@@@@@@@@@@@@    end of the print process    @@@@@@@@@@@@@@@@@@@"
 #endof def
-
 
