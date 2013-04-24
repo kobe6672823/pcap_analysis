@@ -39,6 +39,7 @@ ETHERTYPE = {'0x0600':'XEROX NS IDP',
     '0x9200':'VLAN Tag PI',
     '0xffff':'Reservations'
     }
+#endof ETHERTYPE
 
 class Ethernet(Protocol):
     """a class for Ethernet, derived from class Protocol"""
@@ -73,4 +74,12 @@ class Ethernet(Protocol):
             self.type = ETHERTYPE[data_to_hex_str(self.frame[12:14])]
         #endof if
     #endof def
+    
+    def print_info(self):
+        """a method to print the info in the frame"""
+        
+        print "[%s\tdst:%s\tsrc:%s\ttype:%s]" % (self.ether_type, self.dst_addr, \
+            self.src_addr, self.type)
+    #endof def
+    
 #endof class Ethernet
