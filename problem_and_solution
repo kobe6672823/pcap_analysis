@@ -44,3 +44,16 @@ solution：
 time:  2013/4/23
 tips:
     python中如果要返回多个值，用tuple会很简洁方便～
+
+-----------------------------------------------
+time:  2013/4/23
+problem:
+    解析出来的tcp包头，打印出来的seq_num和ack_num与wireshark的不一致
+solution：
+    这是因为wireshark在这两个数值上面用的是relative value，而不是absolute value
+    relative value的意思是：all SEQ and ACK numbers always start at 0 for the first packet seen in each conversation。
+
+-----------------------------------------------
+time:  2013/4/23
+tips:
+    python中如果打印一个对象中的内容，直接print my_obj.__dict__就行了，很简洁，不用自己写什么print_info函数。。。。

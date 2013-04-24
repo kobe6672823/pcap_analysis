@@ -5,7 +5,7 @@
 from rd_pcap import *
 from ethernet import *
 from ip import *
-
+from tcp import *
 def main():
     """the main funtion"""
     
@@ -19,9 +19,17 @@ def main():
         if (frame_info.type != 'IP'):
             continue
             
-        print '#################packet in the frame  ################'
+        print '#################   packet in the frame  ################'
         packet_info = Ip(packets[i][14:])
         packet_info.print_info()
+        
+        #skp the packet that is not tcp message
+        if (packet_info.protocol != 'TCP'):
+            continue
+        
+        print '@@@@@@@@@@@@@@@@@@@  tcp fields  @@@@@@@@@@@@@@@@@@@@'
+        message_info = Tcp(packet_info.packet[packet_info.header_len: ])
+        message_info.print_info()
         
         print
     #endof for
