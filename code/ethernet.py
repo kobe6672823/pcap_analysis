@@ -47,7 +47,7 @@ class Ethernet(Protocol):
         self.ether_type = None
         self.dst_addr = None
         self.src_addr = None
-        self.data = frame_data
+        self.frame = frame_data  #include the ethernet header and the data in the frame
         self.len = None #useful if ether_type is IEEE802.3 ETHERNET
         self.type = None #useful if ether_type is ETHERNET II
         self.decode()
@@ -56,21 +56,21 @@ class Ethernet(Protocol):
         """a method to get info from the frame_data"""
         
         #get the dst_addr string 
-        addr = data_to_hex_str(self.data[0:6])
+        addr = data_to_hex_str(self.frame[0:6])
         self.dst_addr = addr[2:4] + ':' + addr[4:6] + ':' + addr[6:8] + ':'\
             + addr[8:10] + ':' + addr[10:12] + ':' + addr[12:14]
         #get the src_addr string
-        addr = data_to_hex_str(self.data[6:12])
+        addr = data_to_hex_str(self.frame[6:12])
         self.src_addr = addr[2:4] + ':' + addr[4:6] + ':' + addr[6:8] + ':'\
             + addr[8:10] + ':' + addr[10:12] + ':' + addr[12:14]
         
-        tmp = int(data_to_hex_str(self.data[12:14]), 16)
+        tmp = int(data_to_hex_str(self.frame[12:14]), 16)
         if (tmp <= 1500):   #means that this is a IEEE802.3 ETHERNET frame, and the frame length is tmp
             self.len = tmp
             self.ether_type = "IEEE802.3 ETHERNET"
         else:
             self.ether_type = "ETHERNET II"
-            self.type = ETHERTYPE[data_to_hex_str(self.data[12:14])]
+            self.type = ETHERTYPE[data_to_hex_str(self.frame[12:14])]
         #endof if
     #endof def
 #endof class Ethernet
