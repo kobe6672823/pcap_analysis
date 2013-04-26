@@ -1,3 +1,4 @@
+#! /usr/bin/python 
 # -*- coding: utf-8 -*-
 
 """
@@ -8,6 +9,8 @@ from PyQt4.QtGui import QMainWindow, QFileDialog
 from PyQt4.QtCore import pyqtSignature, QString
 
 from Ui_MainWindow import Ui_MainWindow
+
+from parse.Pcap_packet_container import *
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
@@ -27,6 +30,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         fName = QFileDialog.getOpenFileName(None, self.trUtf8("Select a pcap file to parse"), QString(), self.trUtf8("*.pcap"), None)
         self.status_lb.setText(fName)
+        pcap_container = Pcap_packet_container(fName)
+        pcap_container.parse()
+        pcap_container.print_info()
     
     @pyqtSignature("")
     def on_actionDev_bro_stat_triggered(self):
