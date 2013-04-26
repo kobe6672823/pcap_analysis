@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project pcap_analysis -->
-<!-- Saved: 2013-04-26, 11:41:38 -->
+<!-- Saved: 2013-04-26, 14:59:52 -->
 <!-- Copyright (C) 2013 hm-dev, kobe6672823@qq.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -16,6 +16,14 @@
     <Source>ui/__init__.py</Source>
     <Source>ui/MainWindow.py</Source>
     <Source>main.py</Source>
+    <Source>parse/__init__.py</Source>
+    <Source>parse/protocol.py</Source>
+    <Source>parse/ethernet.py</Source>
+    <Source>parse/Pcap_packet.py</Source>
+    <Source>parse/tcp.py</Source>
+    <Source>parse/Pcap_packet_container.py</Source>
+    <Source>parse/rd_pcap.py</Source>
+    <Source>parse/ip.py</Source>
   </Sources>
   <Forms>
     <Form>ui/MainWindow.ui</Form>
