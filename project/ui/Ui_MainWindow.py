@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/hm/pcap_analysis/project/ui/MainWindow.ui'
 #
-# Created: Fri Apr 26 11:12:07 2013
+# Created: Fri Apr 26 16:16:13 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,9 +34,11 @@ class Ui_MainWindow(object):
         self.status_lb = QtGui.QLabel(self.centralWidget)
         self.status_lb.setObjectName(_fromUtf8("status_lb"))
         self.verticalLayout.addWidget(self.status_lb)
-        self.packet_list_widget = QtGui.QListWidget(self.centralWidget)
-        self.packet_list_widget.setObjectName(_fromUtf8("packet_list_widget"))
-        self.verticalLayout.addWidget(self.packet_list_widget)
+        self.packet_table_widget = QtGui.QTableWidget(self.centralWidget)
+        self.packet_table_widget.setObjectName(_fromUtf8("packet_table_widget"))
+        self.packet_table_widget.setColumnCount(0)
+        self.packet_table_widget.setRowCount(0)
+        self.verticalLayout.addWidget(self.packet_table_widget)
         self.packet_info_tree = QtGui.QTreeWidget(self.centralWidget)
         self.packet_info_tree.setObjectName(_fromUtf8("packet_info_tree"))
         self.packet_info_tree.headerItem().setText(0, _fromUtf8("1"))
