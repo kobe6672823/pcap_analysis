@@ -57,3 +57,11 @@ solution：
 time:  2013/4/23
 tips:
     python中如果打印一个对象中的内容，直接print my_obj.__dict__就行了，很简洁，不用自己写什么print_info函数。。。。
+
+-----------------------------------------------
+time:  2013/4/26
+problem:
+    if (a < b || b < c):
+    有语法错误。。。
+solution：
+    python里面不让这样的，要用“or”还有“and”。。。。

@@ -23,7 +23,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="packet_list_widget"/>
+     <widget class="QTableWidget" name="packet_table_widget"/>
     </item>
     <item>
      <widget class="QTreeWidget" name="packet_info_tree">
