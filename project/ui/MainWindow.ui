@@ -34,9 +34,6 @@
       </column>
      </widget>
     </item>
-    <item>
-     <widget class="QTextBrowser" name="packet_info_text"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
