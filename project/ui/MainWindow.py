@@ -117,6 +117,95 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ip_dst_item.setText(0, item_text)
         
     #endof def
+    
+    def show_tcp_tree(self, pcap_packet):
+        """a method to show a tcp tree in the packet_info_tree"""
+        
+        tcp_item = QTreeWidgetItem(self.packet_info_tree)
+        tcp_item.setText(0, "Transmission Control Protocol")
+        
+        tcp_src_port_item = QTreeWidgetItem(tcp_item)
+        item_text = "Source port: " + str(pcap_packet.tcp.src_port)
+        tcp_src_port_item.setText(0, item_text)
+        
+        tcp_dst_port_item = QTreeWidgetItem(tcp_item)
+        item_text = "Destination port: " + str(pcap_packet.tcp.dst_port)
+        tcp_dst_port_item.setText(0, item_text)
+        
+        tcp_seq_num_item = QTreeWidgetItem(tcp_item)
+        item_text = "Sequence number: " + str(pcap_packet.tcp.sequence_num)
+        tcp_seq_num_item.setText(0, item_text)
+        
+        tcp_ack_num_item = QTreeWidgetItem(tcp_item)
+        item_text = "Acknowledgement number: " + str(pcap_packet.tcp.ack_num)
+        tcp_ack_num_item.setText(0, item_text)
+        
+        tcp_header_len_item = QTreeWidgetItem(tcp_item)
+        item_text = "Header length: " + str(pcap_packet.tcp.header_len)
+        tcp_header_len_item.setText(0, item_text)
+        
+        tcp_flags_item = QTreeWidgetItem(tcp_item)
+        item_text = "Flags: "
+        tcp_flags_item.setText(0, item_text)
+        
+        tcp_flag_urg_item = QTreeWidgetItem(tcp_flags_item)
+        if (pcap_packet.tcp.flag_urg == 0):
+            item_text = "0..... = Urgent: Not set"
+        else:
+            item_text = "1..... = Urgent: Set"
+        tcp_flag_urg_item.setText(0, item_text)
+        
+        tcp_flag_ack_item = QTreeWidgetItem(tcp_flags_item)
+        if (pcap_packet.tcp.flag_ack == 0):
+            item_text = ".0.... = Acknowledgement: Not set"
+        else:
+            item_text = ".1.... = Acknowledgement: Set"
+        tcp_flag_ack_item.setText(0, item_text)
+        
+        tcp_flag_psh_item = QTreeWidgetItem(tcp_flags_item)
+        if (pcap_packet.tcp.flag_psh == 0):
+            item_text = "..0... = Push: Not set"
+        else:
+            item_text = "..1... = Push: Set"
+        tcp_flag_psh_item.setText(0, item_text)
+        
+        tcp_flag_rst_item = QTreeWidgetItem(tcp_flags_item)
+        if (pcap_packet.tcp.flag_rst == 0):
+            item_text = "...0.. = Rest: Not set"
+        else:
+            item_text = "...1.. = Rest: Set"
+        tcp_flag_rst_item.setText(0, item_text)
+        
+        tcp_flag_syn_item = QTreeWidgetItem(tcp_flags_item)
+        if (pcap_packet.tcp.flag_syn == 0):
+            item_text = "....0. = Syn: Not set"
+        else:
+            item_text = "....1. = Syn: Set"
+        tcp_flag_syn_item.setText(0, item_text)
+        
+        tcp_flag_fin_item = QTreeWidgetItem(tcp_flags_item)
+        if (pcap_packet.tcp.flag_fin == 0):
+            item_text = ".....0 = Fin: Not set"
+        else:
+            item_text = ".....1 = Fin: Set"
+        tcp_flag_fin_item.setText(0, item_text)
+        
+        tcp_window_size_item = QTreeWidgetItem(tcp_item)
+        item_text = "Window size: " + str(pcap_packet.tcp.window_size)
+        tcp_window_size_item.setText(0, item_text)
+        
+        tcp_checksum_item = QTreeWidgetItem(tcp_item)
+        item_text = "Check sum: " + pcap_packet.tcp.checksum
+        tcp_checksum_item.setText(0, item_text)
+        
+        tcp_urgent_pointer_item = QTreeWidgetItem(tcp_item)
+        item_text = "Urgent pointer: " + pcap_packet.tcp.urgent_pointer
+        tcp_urgent_pointer_item.setText(0, item_text)
+        
+        tcp_opt_paddings_item = QTreeWidgetItem(tcp_item)
+        item_text = "Option and paddings: " + repr(pcap_packet.tcp.opt_paddings)
+        tcp_opt_paddings_item.setText(0, item_text)
+        
     @pyqtSignature("")
     def show_packet_info_tree(self, Item=None):
         """once user click an item in the packet table widget, 
@@ -137,6 +226,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if (pcap_packet.top_layer < 2):
             return
         self.show_ip_tree(pcap_packet)
+        
+        #show the info of tcp
+        if (pcap_packet.top_layer < 3):
+            return
+        self.show_tcp_tree(pcap_packet)
     
     def fill_in_packet_table(self, pcap_container):
         """display info in the pcap_container to the packet_table_widget"""
