@@ -7,6 +7,7 @@ class Pcap_packet():
     application layer data(if it reaches application layer)}"""
     
     def __init__(self):
+        self.pcap_num = 0  #its sequential number in the pcap file
         self.top_layer = 0  #the toppest layer the pcap_packet reaches: 0(default), 1(ethernet), 2(ip), 3(tcp), 4(application)
         self.ethernet = None    #contain an ethernet obj
         self.ip = None  #contain an ip obj(if it has)

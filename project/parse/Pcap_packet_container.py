@@ -24,9 +24,12 @@ class Pcap_packet_container():
     def parse(self):
         """parse the data in the pcap file, get the container"""
         
+        number = 1
         for raw_packet in self.raw_packets:
             pcap_packet = Pcap_packet()
             self.pcap_packets.append(pcap_packet)
+            pcap_packet.pcap_num = number
+            number += 1
             pcap_packet.top_layer = 1
             pcap_packet.ethernet = Ethernet(raw_packet[0:14])
             
@@ -37,7 +40,7 @@ class Pcap_packet_container():
             pcap_packet.top_layer = 2
             pcap_packet.ip = Ip(raw_packet[14:])
             
-            #skp the packet that is not tcp message
+            #skip the packet that is not tcp message
             if (pcap_packet.ip.protocol != 'TCP'):
                 continue
             
