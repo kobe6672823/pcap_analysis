@@ -16,11 +16,15 @@ class Pcap_packet_container():
         #read in the pcap_file and get the info below
         #raw_packets: the packet reads from pcap file, it hasn't been parsed, it only hases the origin hex data
         #pcap_packets: a Pcap_packet obj, it contains the data that has been parsed into layers
+        #tcp_stream_container: dispatch the tcp packets in the pcap file into tcp streams, and the packets in the tcp stream 
+        #                      should be http packet(at least on port is 80)
+        #msg_list: the http messages list, after tcp reassemble
         self.pcap_header, \
         self.packet_headers, \
         self.raw_packets = rd_pcap(self.pcap_file_name)
         self.pcap_packets = []
         self.tcp_stream_container = []
+        self.msg_list = []
     #endof def
     
     def parse(self):
@@ -49,6 +53,7 @@ class Pcap_packet_container():
             pcap_packet.top_layer = 3
             pcap_packet.tcp = Tcp(pcap_packet.ip.packet[pcap_packet.ip.header_len: ])
             
+            #dispatch the tcp into tcp streams
             self.add_pkt_into_tcp_stream(pcap_packet, number)
         #endof for
     #endof def
@@ -60,6 +65,10 @@ class Pcap_packet_container():
         socket_pair = set()
         socket_pair.add((pcap_packet.ip.src, pcap_packet.tcp.src_port))
         socket_pair.add((pcap_packet.ip.dst, pcap_packet.tcp.dst_port))
+        
+        #filter the packets that is not http packet
+        if (pcap_packet.tcp.src_port != 80 and pcap_packet.tcp.dst_port != 80):
+            return
         
         for stream in self.tcp_stream_container:
             if (socket_pair == stream.socket_pair):
