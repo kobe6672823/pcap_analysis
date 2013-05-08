@@ -6,6 +6,7 @@ from ethernet import *
 from ip import *
 from tcp import *
 from Pcap_packet import *
+from tcp_stream_container import *
 from tcp_stream import *
 
 class Pcap_packet_container():
@@ -23,7 +24,7 @@ class Pcap_packet_container():
         self.packet_headers, \
         self.raw_packets = rd_pcap(self.pcap_file_name)
         self.pcap_packets = []
-        self.tcp_stream_container = []
+        self.tcp_stream_container = Tcp_stream_container()
         self.msg_list = []
     #endof def
     
@@ -62,25 +63,24 @@ class Pcap_packet_container():
         """a method to add a pcap_packet into a tcp stream, if it does not belong to any existing tcp stream, 
         create a new one"""
         
-        socket_pair = set()
-        socket_pair.add((pcap_packet.ip.src, pcap_packet.tcp.src_port))
-        socket_pair.add((pcap_packet.ip.dst, pcap_packet.tcp.dst_port))
-        
         #filter the packets that is not http packet
         if (pcap_packet.tcp.src_port != 80 and pcap_packet.tcp.dst_port != 80):
             return
         
-        for stream in self.tcp_stream_container:
-            if (socket_pair == stream.socket_pair):
-                stream.pcap_num_list.append(num)
-                break
+        if (pcap_packet.tcp.src_port == 80):
+            server_addr = pcap_packet.ip.src
+            client_addr = pcap_packet.ip.dst
+            client_port = pcap_packet.tcp.dst_port
         else:
-            new_stream = Tcp_stream(pcap_packet.ip.src, pcap_packet.tcp.src_port, 
-                pcap_packet.ip.dst, pcap_packet.tcp.dst_port)
-            new_stream.pcap_num_list.append(num)
-            self.tcp_stream_container.append(new_stream)
-        
-        
+            server_addr = pcap_packet.ip.dst
+            client_addr = pcap_packet.ip.src
+            client_port = pcap_packet.tcp.src_port
+        socket_tuple = (client_addr, client_port, server_addr, 80)
+        if (socket_tuple not in self.tcp_stream_container):
+            self.tcp_stream_container[socket_tuple] = Tcp_stream()
+        self.tcp_stream_container[socket_tuple].pcap_num_list.append(num)
+            
+
     def print_info(self):
         """a method to print all the packets in a container to the stander output"""
         
