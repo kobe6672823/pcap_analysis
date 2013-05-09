@@ -28,10 +28,10 @@ class Tcp(Protocol):
         self.urgent_pointer = None
         self.opt_paddings = None
 
-        self.decode()
+        self._decode()
     #endof def
 
-    def decode(self):
+    def _decode(self):
         """a method to decode the info in the tcp message, and fill in the fields above"""
 
         self.src_port = int(data_to_hex_str(self.message[0:2]), 16)
