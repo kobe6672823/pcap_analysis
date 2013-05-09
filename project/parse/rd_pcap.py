@@ -40,6 +40,7 @@ def rd_pcap(pcap_file_name):
         packet_header = {}
         packet_header['timestamp_s'], packet_header['timestamp_ms'], packet_header['cap_len'], packet_header['len'] = \
         struct.unpack('IIII', string_data[pos : pos+16])
+        packet_header['ts'] = float(str(packet_header['timestamp_s']) + '.' + str(packet_header['timestamp_ms']))
         pos += 16
         
         #get the packet data
