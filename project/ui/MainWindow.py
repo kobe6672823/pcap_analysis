@@ -294,7 +294,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         #get pcap_container
         self.pcap_container = Pcap_packet_container(fName)
-        self.pcap_container.parse()
         
         self.fill_in_packet_table(self.pcap_container)
     

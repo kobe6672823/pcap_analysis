@@ -44,9 +44,9 @@ class Ip(Protocol):
         self.dst = None
         self.opt_paddings = None
         
-        self.decode()
+        self._decode()
         
-    def decode(self):
+    def _decode(self):
         """a method to decode the infomation in the packet_data, and fill in the fields above"""
         
         self.version = int(data_to_hex_str(self.packet[0])[2])

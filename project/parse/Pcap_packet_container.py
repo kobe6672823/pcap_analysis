@@ -26,9 +26,11 @@ class Pcap_packet_container():
         self.pcap_packets = []
         self.tcp_stream_container = Tcp_stream_container()
         self.msg_list = []
+        
+        self._parse()
     #endof def
     
-    def parse(self):
+    def _parse(self):
         """parse the data in the pcap file, get the container"""
         
         number = 1
@@ -55,11 +57,11 @@ class Pcap_packet_container():
             pcap_packet.tcp = Tcp(pcap_packet.ip.packet[pcap_packet.ip.header_len: ])
             
             #dispatch the tcp into tcp streams
-            self.add_pkt_into_tcp_stream(pcap_packet, number)
+            self._add_pkt_into_tcp_stream(pcap_packet, number)
         #endof for
     #endof def
     
-    def add_pkt_into_tcp_stream(self, pcap_packet, num):
+    def _add_pkt_into_tcp_stream(self, pcap_packet, num):
         """a method to add a pcap_packet into a tcp stream, if it does not belong to any existing tcp stream, 
         create a new one"""
         

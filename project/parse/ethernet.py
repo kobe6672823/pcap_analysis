@@ -51,9 +51,9 @@ class Ethernet(Protocol):
         self.frame = frame_data  #include the ethernet header and the data in the frame
         self.len = None #useful if ether_type is IEEE802.3 ETHERNET
         self.type = None #useful if ether_type is ETHERNET II
-        self.decode()
+        self._decode()
     
-    def decode(self):
+    def _decode(self):
         """a method to get info from the frame_data"""
         
         #get the dst_addr string 
