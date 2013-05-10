@@ -142,7 +142,6 @@ class Pcap_packet_container():
             return
         
         self.http_list.append(Http(msg.payload))
-        
     
     def print_info(self):
         """a method to print all the packets in a container to the stander output"""
