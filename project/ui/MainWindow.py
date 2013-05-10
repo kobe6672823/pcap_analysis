@@ -300,10 +300,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionDev_bro_stat_triggered(self):
         """
-        Slot documentation goes here.
+        get and store the statistic of device and browser, and show it in a new window
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
+        if (self.pcap_container == None):
+            self.status_lb.setText("please load a pcap file!")
+            return
+        
     
     @pyqtSignature("")
     def on_actionSession_split_triggered(self):

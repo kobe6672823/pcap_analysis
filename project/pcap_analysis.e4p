@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project pcap_analysis -->
-<!-- Saved: 2013-05-09, 11:01:20 -->
+<!-- Saved: 2013-05-10, 09:58:37 -->
 <!-- Copyright (C) 2013 hm-dev, kobe6672823@qq.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -27,6 +27,7 @@
     <Source>parse/tcp_stream_container.py</Source>
     <Source>parse/tcp_stream.py</Source>
     <Source>parse/message.py</Source>
+    <Source>parse/http.py</Source>
   </Sources>
   <Forms>
     <Form>ui/MainWindow.ui</Form>
