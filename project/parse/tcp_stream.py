@@ -9,4 +9,4 @@ class Tcp_stream():
         #pcap_num_list: the current stream has these packets(number in the pcap_packet_container)
         #msg_num_list: the current stream has these msg(msg number in the msg_list, msg_list belongs to pcap_container) 
         self.pcap_num_list = []
-        self.msg_num_list = []
+        self.msg_num_list = []  #not done see the TODO in the pcap_packet_container
