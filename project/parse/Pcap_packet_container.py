@@ -9,6 +9,7 @@ from Pcap_packet import *
 from tcp_stream_container import *
 from tcp_stream import *
 from message import *
+from http import *
 
 #global var for tcp reassemble
 _tcp_buf = None
@@ -29,7 +30,9 @@ class Pcap_packet_container():
         self.raw_packets = rd_pcap(self.pcap_file_name)
         self.pcap_packets = []
         self.tcp_stream_container = Tcp_stream_container()
+        #msg_list and http_list are parallel
         self.msg_list = []
+        self.http_list = []
         
         self._parse()
     #endof def
@@ -128,8 +131,19 @@ class Pcap_packet_container():
         msg = _tcp_buf[sockets]
         msg['payload'] = ''.join(msg.payload)
         self.msg_list.append(msg)
+        self._trans_msg_to_http_obj(msg)
         #TODO: need to store the msg_number into the tcp_stream????then the tcp_stream know what msgs it has
         
+    def _trans_msg_to_http_obj(self, msg):
+        """a method to transfer the msg to a http obj, append a None obj to the http_list if the msg's payload is empty"""
+        
+        if (len(msg.payload) == 0):
+            self.http_list.append(None)
+            return
+        
+        self.http_list.append(Http(msg.payload))
+        
+    
     def print_info(self):
         """a method to print all the packets in a container to the stander output"""
         
