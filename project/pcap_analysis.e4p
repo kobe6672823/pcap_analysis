@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project pcap_analysis -->
-<!-- Saved: 2013-05-13, 14:26:15 -->
+<!-- Saved: 2013-05-13, 17:15:37 -->
 <!-- Copyright (C) 2013 hm-dev, kobe6672823@qq.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -30,9 +30,12 @@
     <Source>parse/http.py</Source>
     <Source>analyzer/__init__.py</Source>
     <Source>analyzer/user_behavior_analyzer.py</Source>
+    <Source>ui/Ui_User_behavior_statistic_window.py</Source>
+    <Source>ui/User_behavior_statistic_window.py</Source>
   </Sources>
   <Forms>
     <Form>ui/MainWindow.ui</Form>
+    <Form>ui/User_behavior_statistic_window.ui</Form>
   </Forms>
   <Translations>
   </Translations>

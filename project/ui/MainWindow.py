@@ -13,6 +13,8 @@ from Ui_MainWindow import Ui_MainWindow
 from parse.Pcap_packet_container import *
 from analyzer.user_behavior_analyzer import *
 
+from User_behavior_statistic_window import User_behavior_statistic_window
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
     Class documentation goes here.
@@ -306,12 +308,47 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         
         if (self.pcap_container == None):
-            self.status_lb.setText("please load a pcap file!")
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
             return
         
         #traverse the http_list, if not none and it is a http_request, get the user-agent to do the statistic
         self.user_behavior_analyzer = User_behavior_analyzer()
         self.user_behavior_analyzer.analyze(self.pcap_container)
+        
+        #show the statistic info in a new window
+        wnd = User_behavior_statistic_window(self)
+        wnd.file_name_lb.setText(self.pcap_container.pcap_file_name)
+        
+        #browser statistic
+        table_headers = self.user_behavior_analyzer.browser_statistics.keys()
+        wnd.bro_stat_table_widget.setColumnCount(len(table_headers))
+        wnd.bro_stat_table_widget.setRowCount(1)
+        wnd.bro_stat_table_widget.setHorizontalHeaderLabels(table_headers)
+        wnd.bro_stat_table_widget.verticalHeader().setVisible(False)
+        wnd.bro_stat_table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        wnd.bro_stat_table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        cur_col = 0
+        for key in table_headers:
+            newItem = QTableWidgetItem(str(self.user_behavior_analyzer.browser_statistics[key]))
+            wnd.bro_stat_table_widget.setItem(0, cur_col, newItem)
+            cur_col += 1
+        wnd.bro_stat_table_widget.resizeColumnsToContents()
+        
+        #platform statistic
+        table_headers = self.user_behavior_analyzer.platform_statistics.keys()
+        wnd.plat_stat_table_widget.setColumnCount(len(table_headers))
+        wnd.plat_stat_table_widget.setRowCount(1)
+        wnd.plat_stat_table_widget.setHorizontalHeaderLabels(table_headers)
+        wnd.plat_stat_table_widget.verticalHeader().setVisible(False)
+        wnd.plat_stat_table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        wnd.plat_stat_table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        cur_col = 0
+        for key in table_headers:
+            newItem = QTableWidgetItem(str(self.user_behavior_analyzer.platform_statistics[key]))
+            wnd.plat_stat_table_widget.setItem(0, cur_col, newItem)
+            cur_col += 1
+        wnd.plat_stat_table_widget.resizeColumnsToContents()
+        wnd.show()
     
     @pyqtSignature("")
     def on_actionSession_split_triggered(self):

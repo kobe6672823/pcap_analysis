@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/hm/pcap_analysis/project/ui/MainWindow.ui'
 #
-# Created: Sat Apr 27 09:57:53 2013
+# Created: Mon May 13 16:37:30 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
