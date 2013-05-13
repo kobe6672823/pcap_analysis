@@ -11,6 +11,7 @@ from PyQt4.QtCore import *
 from Ui_MainWindow import Ui_MainWindow
 
 from parse.Pcap_packet_container import *
+from analyzer.user_behavior_analyzer import *
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
@@ -23,6 +24,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
         self.pcap_container = None
+        self.user_behavior_analyzer = None
         self.connect(self.packet_table_widget, SIGNAL("itemClicked (QTableWidgetItem*)"), self.show_packet_info_tree)
     
     def show_ethernet_tree(self, pcap_packet):
@@ -307,6 +309,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.status_lb.setText("please load a pcap file!")
             return
         
+        #traverse the http_list, if not none and it is a http_request, get the user-agent to do the statistic
+        self.user_behavior_analyzer = User_behavior_analyzer()
+        self.user_behavior_analyzer.analyze(self.pcap_container)
     
     @pyqtSignature("")
     def on_actionSession_split_triggered(self):
