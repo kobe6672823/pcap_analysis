@@ -5,6 +5,8 @@
 Module implementing MainWindow.
 """
 
+import os
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -382,6 +384,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         export the statistic of device and browser to excel file and draw pics of the statistic
         """
         
+        if (not os.path.exists("user_behavior_analyzer")):
+            os.mkdir("user_behavior_analyzer")
         #export to excel
         if (self.pcap_container == None):
             warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
@@ -410,9 +414,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ws.write(1, cur_col, self.user_behavior_analyzer.platform_statistics[key])
             cur_col += 1
         
-        xl_file_name = "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + '_user_behavior_stat.xls'
+        xl_file_name = "user_behavior_analyzer/" + "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + \
+            '_user_behavior_stat.xls'
         wb.save(xl_file_name)
         warning_box = QMessageBox.warning(self, "confirm", "export done!")
+        
+        
     
     @pyqtSignature("")
     def on_actionTcp_stat_triggered(self):
