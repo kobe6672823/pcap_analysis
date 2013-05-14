@@ -40,6 +40,8 @@ class User_behavior_analyzer():
     def analyze(self, pcap_container):
         """a method to get browser statistic & platform statistic"""
         
+        self._clear()
+        
         for http in pcap_container.http_list:
             if (http and http.type == HTTP_REQUEST and http.header_fields.has_key("User-Agent")):
                 user_agent = http.header_fields["User-Agent"]
@@ -88,3 +90,11 @@ class User_behavior_analyzer():
                     self.platform_statistics["Unix"] += 1
                 else:
                     self.platform_statistics["unknown"] += 1
+                    
+    def _clear(self):
+        """a method to clear the analyzer"""
+        
+        for key in self.browser_statistics.keys():
+            self.browser_statistics[key] = 0
+        for key in self.platform_statistics.keys():
+            self.platform_statistics[key] = 0
