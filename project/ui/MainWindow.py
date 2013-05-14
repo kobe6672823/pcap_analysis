@@ -15,6 +15,8 @@ from analyzer.user_behavior_analyzer import *
 
 from User_behavior_statistic_window import User_behavior_statistic_window
 
+import xlwt
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
     Class documentation goes here.
@@ -380,6 +382,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         export the statistic of device and browser to excel file and draw pics of the statistic
         """
         
+        #export to excel
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.user_behavior_analyzer == None):
+            self.user_behavior_analyzer = User_behavior_analyzer()
+            self.user_behavior_analyzer.analyze(self.pcap_container)
+        
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet('browser statistics')
+        table_headers = self.user_behavior_analyzer.browser_statistics.keys()
+        cur_col = 0
+        for key in table_headers:
+            ws.write(0, cur_col, key)
+            ws.write(1, cur_col, self.user_behavior_analyzer.browser_statistics[key])
+            cur_col += 1
+        
+        ws = wb.add_sheet('platform statistics')
+        table_headers = self.user_behavior_analyzer.platform_statistics.keys()
+        cur_col = 0
+        for key in table_headers:
+            if (key == 'NT'):
+                ws.write(0, cur_col, 'Windows')
+            else:
+                ws.write(0, cur_col, key)
+            ws.write(1, cur_col, self.user_behavior_analyzer.platform_statistics[key])
+            cur_col += 1
+        
+        xl_file_name = "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + '_user_behavior_stat.xls'
+        wb.save(xl_file_name)
+        warning_box = QMessageBox.warning(self, "confirm", "export done!")
     
     @pyqtSignature("")
     def on_actionTcp_stat_triggered(self):
