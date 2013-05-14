@@ -377,10 +377,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionExport_dev_bro_stat_triggered(self):
         """
-        Slot documentation goes here.
+        export the statistic of device and browser to excel file and draw pics of the statistic
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
     
     @pyqtSignature("")
     def on_actionTcp_stat_triggered(self):
