@@ -100,3 +100,8 @@ problem:
     gzip解压http的content解压不了
 solution：
     在http报文中，报头都是用"\r\n"做换行分割的，最后会多出一个换行，特别注意的是这个换行是属于content的，而不属于的报头的，把这个换行加到content解压就成功了
+
+-----------------------------------------------
+time:  2013/5/14
+tips:
+    用python-excel这个第三方模块去读写excel文件，用matplotlib去画图像
