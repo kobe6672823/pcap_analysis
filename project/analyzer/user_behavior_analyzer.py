@@ -5,6 +5,7 @@ from parse.Pcap_packet_container import *
 
 import xlwt
 import os
+import matplotlib.pyplot as plt 
 
 class User_behavior_analyzer():
     """a class for analyzing user behavior"""
@@ -131,10 +132,47 @@ class User_behavior_analyzer():
         xl_file_name = "user_behavior_analyzer/" + "_".join(str(pcap_file_name.split("/")[-1]).split('.')) + \
             '_user_behavior_stat.xls'
         wb.save(xl_file_name)
-        
-        #draw pics and store
-        import matplotlib.pyplot as plt  
+    
+    def export_to_png(self, pcap_file_name):
+        """a method to export statistics to bar chart"""
 
-        plt.bar(left = 0,height = 1)
-        plt.show()
-        plt.savefig('current.png', dpi=75)
+        #browser statistics
+        plt.title("browser type statistics")
+        plt.xlabel('browser type')
+        plt.ylabel('times')
+        
+        table_headers = self.browser_statistics.keys()
+        plt.xticks(range(0, len(table_headers)), table_headers, rotation=30)
+        eps = 1e-7
+        bar_height = [self.browser_statistics[key] + eps for key in table_headers]
+        rect = plt.bar(left = range(0, len(table_headers)), height = bar_height, width = 0.3,align="center")
+        self._autolabel(plt, rect)
+        plt.tight_layout()
+        png_file_name = "user_behavior_analyzer/" + "_".join(str(pcap_file_name.split("/")[-1]).split('.')) + \
+            '_browser_stat.png'
+        plt.savefig(png_file_name, dpi=75)
+        
+        #platform_statistics
+        plt.figure()    #necessary! otherwise two figure will mixed some args
+        plt.title("platform statistics")
+        plt.xlabel('platform')
+        plt.ylabel('times')
+        
+        table_headers = self.platform_statistics.keys()
+        plt.xticks(range(0, len(table_headers)), table_headers, rotation=30)
+        eps = 1e-7
+        bar_height = [self.platform_statistics[key] + eps for key in table_headers]
+        rect = plt.bar(left = range(0, len(table_headers)), height = bar_height, width = 0.3,align="center")
+        self._autolabel(plt, rect)
+        plt.tight_layout()
+        png_file_name = "user_behavior_analyzer/" + "_".join(str(pcap_file_name.split("/")[-1]).split('.')) + \
+            '_platform_stat.png'
+        plt.savefig(png_file_name, dpi=75)
+        
+    def _autolabel(self, plt, rects):
+        """a method to label the height of the bar in the bar chart"""
+        
+        for rect in rects:
+            height = int(rect.get_height())
+            if (height > 0):
+                plt.text(rect.get_x()+rect.get_width()/2., 1.03*height, '%s' % int(height))

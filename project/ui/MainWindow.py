@@ -389,6 +389,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.user_behavior_analyzer.analyze(self.pcap_container)
         
         self.user_behavior_analyzer.export_to_xls(self.pcap_container.pcap_file_name)
+        self.user_behavior_analyzer.export_to_png(self.pcap_container.pcap_file_name)
         warning_box = QMessageBox.warning(self, "confirm", "export done!")
     
     @pyqtSignature("")
