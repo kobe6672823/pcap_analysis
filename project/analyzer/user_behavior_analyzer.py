@@ -3,6 +3,9 @@
 
 from parse.Pcap_packet_container import *
 
+import xlwt
+import os
+
 class User_behavior_analyzer():
     """a class for analyzing user behavior"""
     
@@ -98,3 +101,40 @@ class User_behavior_analyzer():
             self.browser_statistics[key] = 0
         for key in self.platform_statistics.keys():
             self.platform_statistics[key] = 0
+    
+    def export_to_xls(self, pcap_file_name):
+        """a method to export the data in the analyzer to the xls file"""
+        
+        if (not os.path.exists("user_behavior_analyzer")):
+            os.mkdir("user_behavior_analyzer")
+        
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet('browser statistics')
+        table_headers = self.browser_statistics.keys()
+        cur_col = 0
+        for key in table_headers:
+            ws.write(0, cur_col, key)
+            ws.write(1, cur_col, self.browser_statistics[key])
+            cur_col += 1
+        
+        ws = wb.add_sheet('platform statistics')
+        table_headers = self.platform_statistics.keys()
+        cur_col = 0
+        for key in table_headers:
+            if (key == 'NT'):
+                ws.write(0, cur_col, 'Windows')
+            else:
+                ws.write(0, cur_col, key)
+            ws.write(1, cur_col, self.platform_statistics[key])
+            cur_col += 1
+        
+        xl_file_name = "user_behavior_analyzer/" + "_".join(str(pcap_file_name.split("/")[-1]).split('.')) + \
+            '_user_behavior_stat.xls'
+        wb.save(xl_file_name)
+        
+        #draw pics and store
+        import matplotlib.pyplot as plt  
+
+        plt.bar(left = 0,height = 1)
+        plt.show()
+        plt.savefig('current.png', dpi=75)
