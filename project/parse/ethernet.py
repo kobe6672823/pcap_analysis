@@ -71,7 +71,10 @@ class Ethernet(Protocol):
             self.ether_type = "IEEE802.3 ETHERNET"
         else:
             self.ether_type = "ETHERNET II"
-            self.type = ETHERTYPE[data_to_hex_str(self.frame[12:14])]
+            if ETHERTYPE.has_key(data_to_hex_str(self.frame[12:14])):
+                self.type = ETHERTYPE[data_to_hex_str(self.frame[12:14])]
+            else:
+                self.type = "unknown"
         #endof if
     #endof def
     
