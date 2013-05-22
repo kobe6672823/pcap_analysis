@@ -75,6 +75,10 @@ class Pcap_packet_container():
             #reassemble tcp packet
             self._tcp_reassemble(pcap_packet.pcap_num, pcap_packet.ip.src, pcap_packet.ip.dst, pcap_packet.tcp)
         #endof for
+        #flush the tcp_buf, other wise it will lose some http response
+        for sockets in _tcp_buf.keys():
+            self._tcp_flush(sockets)
+            del _tcp_buf[sockets]
     #endof def
     
     def _add_pkt_into_tcp_stream(self, pcap_packet, num):
@@ -101,7 +105,7 @@ class Pcap_packet_container():
         src_socket  = (src_addr, tcp.src_port)
         dst_socket  = (dst_addr, tcp.dst_port)
         sockets     = (src_socket, dst_socket)
-        
+
         if pld:
             if not sockets in _tcp_buf:
                 _tcp_buf[sockets] = Message({

@@ -12,6 +12,7 @@ from Ui_MainWindow import Ui_MainWindow
 
 from parse.Pcap_packet_container import *
 from analyzer.user_behavior_analyzer import *
+from session.session_container import *
 
 from User_behavior_statistic_window import User_behavior_statistic_window
 
@@ -26,6 +27,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
         self.pcap_container = None
+        self.session_container = Session_container(self.pcap_container)
         self.user_behavior_analyzer = None
         self.connect(self.packet_table_widget, SIGNAL("itemClicked (QTableWidgetItem*)"), self.show_packet_info_tree)
     
@@ -255,10 +257,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for pcap_packet in pcap_container.pcap_packets:
             
             #skip the packet that I don't need(only need tcp/ip packet)
-            #if (pcap_packet.ethernet.ether_type != "ETHERNET II" or 
-            #    pcap_packet.ethernet.type != "IP" or 
-            #    pcap_packet.ip.protocol != "TCP"):
-            #    continue
+            if (pcap_packet.ethernet.ether_type != "ETHERNET II" or 
+                pcap_packet.ethernet.type != "IP" or 
+                pcap_packet.ip.protocol != "TCP"):
+                continue
                 
             #set number
             newItem = QTableWidgetItem(str(cur_num+1))
@@ -353,10 +355,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionSession_split_triggered(self):
         """
-        Slot documentation goes here.
+        split the pcap_container's http_list into sessions
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
+        self.session_container.split_session()
     
     @pyqtSignature("")
     def on_actionSession_stat_triggered(self):

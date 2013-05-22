@@ -36,8 +36,8 @@ class Http(Protocol):
         
         self._get_header_fields()
         #decode http content if necessary
-        if (self.type == HTTP_RESPONSE and self.header_fields.has_key("Content-Encoding") and 
-            self.header_fields["Content-Encoding"] == "gzip"):
+        if (self.type == HTTP_RESPONSE and self.header_fields.has_key("content-encoding") and 
+            self.header_fields["content-encoding"] == "gzip"):
             try:
                 gf = GzipFile(fileobj=StringIO(self.content), mode="r")
                 self.decoding_content = gf.read()
@@ -60,6 +60,6 @@ class Http(Protocol):
         header_lines = self.http_header.split("\r\n")
         for line in header_lines[1:]:
             line_split = line.split(": ")
-            field_name = line_split[0]
+            field_name = str.lower(line_split[0])
             self.header_fields[field_name] = line_split[1]
             
