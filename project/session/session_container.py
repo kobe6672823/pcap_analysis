@@ -40,20 +40,57 @@ def _find_init_response_pos(pcap_container, start, end):
 def _extract_link(html_page):
     """a method to extract all links in a html page"""
     
-    soup = BeautifulSoup(html_page)
+    try:
+        soup = BeautifulSoup(html_page)
+    except:
+        empty_set = set()
+        return empty_set
     #find all tags that have attrs: href and src
     href_list = soup.findAll(href = True)
     src_list = soup.findAll(src = True)
     #extract links in the attr : "href" and "src"
     href_set = set([tag['href'] for tag in href_list])
     src_set = set([tag['src'] for tag in src_list])
-    link_set = href_set | src_set
+    u_link_set = href_set | src_set
     
+    #transfer unicode to ascii str
+    link_set = set()
+    for link in u_link_set:
+        link_set.add(str(link))
     return link_set
+    
+    #TODO: current method is using the beautiful soup to get all the href and src, but it is not complete, some links in the script
+    #will miss, should use regular expression to parse the html page, and get all links
+    
+def _is_in_link_set(uri, link_set):
+    """a method to judge if a uri in the link_set or not(test the uri is the sub string of a link in the linkset or not)"""
+    
+    #TODO: improve the algorithm to test a uri in the set or not, the current method is really stupid and inefficient
+    for link in link_set:
+        if (link.find(uri) != -1):
+            return True
+    return False
+        
+def _get_sockets_set(pcap_container, link_set):
+    """a method to sockets set according to the link_set:   
+    if a http's uri in the linkset, then the sockets related to this http will be added into the sockets set"""
+    
+    cur = 0
+    sockets_set = set()
+    for http in pcap_container.http_list:
+        if (http != None and http.http_type == 1 and _is_in_link_set(http.header_fields["uri"], link_set)):
+            sockets = ((pcap_container.msg_list[cur]["src_addr"], pcap_container.msg_list[cur]["src_port"]), 
+                ((pcap_container.msg_list[cur]["dst_addr"], pcap_container.msg_list[cur]["dst_port"])))
+            sockets_set.add(sockets)
+            sockets_set.add(sockets[::-1])  #reverse the direction   src->dst   ===>>>   dst->src
+        cur += 1
+    return sockets_set
     
 def _is_html_uri(uri):
     """a method to judge an uri is a html page or not"""
     
+    if (uri == None):
+        return False
     pattern = '.+\.(html|htm)$'
     m = re.match(pattern, uri)
     if (m != None or uri == '/'):
@@ -90,6 +127,8 @@ class Session_container():
             link_set = _extract_link(html_src)
             
             #from the link_set, find related request(according "uri"), and get the sockets_set
-            
+            sockets_set = _get_sockets_set(pcap_container, link_set)
             #init a new session
+            new_session = Session(init_req, init_response, sockets_set, pcap_container)
+            self.sessions.append(new_session)
     

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Tasks SYSTEM "Tasks-4.2.dtd">
 <!-- eric4 tasks file for project pcap_analysis -->
-<!-- Saved: 2013-05-22, 17:36:31 -->
+<!-- Saved: 2013-05-27, 15:37:03 -->
 <Tasks version="4.2">
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO:to decrease the memory overhead</Summary>
     <Description></Description>
-    <Created>2013-05-06, 09:34:54</Created>
+    <Created>2013-05-27, 10:30:49</Created>
     <Resource>
       <Filename>parse/Pcap_packet.py</Filename>
       <Linenumber>17</Linenumber>
@@ -15,7 +15,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: need to store the msg_number into the tcp_stream????then the tcp_stream know what msgs it has</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:33:57</Created>
+    <Created>2013-05-27, 10:30:54</Created>
     <Resource>
       <Filename>parse/Pcap_packet_container.py</Filename>
       <Linenumber>139</Linenumber>
@@ -24,7 +24,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>368</Linenumber>
@@ -33,7 +33,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>376</Linenumber>
@@ -42,7 +42,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>402</Linenumber>
@@ -51,7 +51,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>410</Linenumber>
@@ -60,7 +60,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>418</Linenumber>
@@ -69,7 +69,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>426</Linenumber>
@@ -78,7 +78,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>434</Linenumber>
@@ -87,7 +87,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>442</Linenumber>
@@ -96,7 +96,7 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2013-05-22, 16:47:36</Created>
+    <Created>2013-05-27, 10:36:52</Created>
     <Resource>
       <Filename>ui/MainWindow.py</Filename>
       <Linenumber>450</Linenumber>
