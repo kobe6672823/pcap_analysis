@@ -13,12 +13,15 @@ class Http(Protocol):
     """a class for http, derived from class Protocol(an empty class)"""
     
     def __init__(self, data):
-        header_len = data.index("\r\n\r\n")
+        self.http_type = None    #HTTP_REQUEST or HTTP_RESPONSE
+        try:
+            header_len = data.index("\r\n\r\n")
+        except:
+            print "illegal http header format"
+            return
         self.http_header = "".join(data[0:header_len])  #without the "\r\n\r\n"
         self.content = "".join(data[header_len+4:])
         self.decoding_content = None    #if the http content isnot encoding, this field will be None
-        
-        self.http_type = None    #HTTP_REQUEST or HTTP_RESPONSE
         
         #all fields in a http header(HTTP/1.1)
         self.header_fields = {}
@@ -54,12 +57,18 @@ class Http(Protocol):
         else:
             self.http_type = HTTP_REQUEST
             self.header_fields["request_method"] = str(self.http_header[0:3])
-            pos = self.http_header.index(" HTTP/1.1")
-            self.header_fields["uri"] = str(self.http_header[4:pos])
+            try:
+                pos = self.http_header.index(" HTTP/1.1")
+                self.header_fields["uri"] = str(self.http_header[4:pos])
+            except:
+                print "illegal http request format"
         
         header_lines = self.http_header.split("\r\n")
         for line in header_lines[1:]:
             line_split = line.split(": ")
             field_name = str.lower(line_split[0])
-            self.header_fields[field_name] = line_split[1]
+            try:
+                self.header_fields[field_name] = line_split[1]
+            except:
+                self.header_fields[field_name] = ""
             
