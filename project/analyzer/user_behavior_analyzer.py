@@ -47,7 +47,7 @@ class User_behavior_analyzer():
         self._clear()
         
         for http in pcap_container.http_list:
-            if (http and http.type == HTTP_REQUEST and http.header_fields.has_key("user-agent")):
+            if (http and http.http_type == HTTP_REQUEST and http.header_fields.has_key("user-agent")):
                 user_agent = http.header_fields["user-agent"]
                 #browser statistic
                 if (user_agent.find("MSIE") != -1):

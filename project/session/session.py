@@ -8,8 +8,9 @@ class Session():
         """request_num: request http's pos in the http list
         response_num: response http's pos in the http list"""
         
-        self.request_num = request_num
-        self.response_num = response_num
+        self.init_req_num = request_num
+        self.init_response_num = response_num
         self.http_list = []
         self.http_list.append(request_num)
         self.http_list.append(response_num)
+        self.pcap_packet_list = []

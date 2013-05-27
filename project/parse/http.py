@@ -18,7 +18,7 @@ class Http(Protocol):
         self.content = "".join(data[header_len+4:])
         self.decoding_content = None    #if the http content isnot encoding, this field will be None
         
-        self.type = None    #HTTP_REQUEST or HTTP_RESPONSE
+        self.http_type = None    #HTTP_REQUEST or HTTP_RESPONSE
         
         #all fields in a http header(HTTP/1.1)
         self.header_fields = {}
@@ -36,7 +36,7 @@ class Http(Protocol):
         
         self._get_header_fields()
         #decode http content if necessary
-        if (self.type == HTTP_RESPONSE and self.header_fields.has_key("content-encoding") and 
+        if (self.http_type == HTTP_RESPONSE and self.header_fields.has_key("content-encoding") and 
             self.header_fields["content-encoding"] == "gzip"):
             try:
                 gf = GzipFile(fileobj=StringIO(self.content), mode="r")
@@ -48,11 +48,11 @@ class Http(Protocol):
         """a method to fill in the fields above"""
         
         if (self.http_header[0:6] == "HTTP/1"):
-            self.type = HTTP_RESPONSE
+            self.http_type = HTTP_RESPONSE
             self.header_fields["status_code"] = int(self.http_header[9:12])
             self.header_fields["status"] = str(self.http_header[13:15])
         else:
-            self.type = HTTP_REQUEST
+            self.http_type = HTTP_REQUEST
             self.header_fields["request_method"] = str(self.http_header[0:3])
             pos = self.http_header.index(" HTTP/1.1")
             self.header_fields["uri"] = str(self.http_header[4:pos])
