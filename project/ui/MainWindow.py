@@ -27,7 +27,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
         self.pcap_container = None
-        self.session_container = Session_container(self.pcap_container)
+        self.session_container = Session_container()
         self.user_behavior_analyzer = None
         self.connect(self.packet_table_widget, SIGNAL("itemClicked (QTableWidgetItem*)"), self.show_packet_info_tree)
     
@@ -358,7 +358,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         split the pcap_container's http_list into sessions
         """
         
-        self.session_container.split_session()
+        self.session_container.split_session(self.pcap_container)
     
     @pyqtSignature("")
     def on_actionSession_stat_triggered(self):
