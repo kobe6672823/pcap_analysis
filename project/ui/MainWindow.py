@@ -366,6 +366,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.session_container = Session_container()
         self.session_container.split_session(self.pcap_container)
+        warning_box = QMessageBox.warning(self, "warn", "done!")
     
     @pyqtSignature("")
     def on_actionSession_stat_triggered(self):
