@@ -1,0 +1,12 @@
+项目中划分session的思路：
+1、在HTTP_list中找到第一个请求HTML的http请求（得到init_req）
+2、可得到init_req的client->server的sockets和在http_list中的pos
+3、在msg_list的init_req的pos往后找，server->client方向的sockets的第一个响应（即init_req的response）（得到init_response）
+4、在init_response中提取页面所有的链接（links_set）
+5、在msg_list的pos往后扫一遍所有req，在links_set中的将它的sockets记下来（得到sockets_set）
+6、所有在sockets_set中的包属于一个session
+
+
+
+判断一个http请求是否在link_set内，只需要看这个请求的uri是否是link_set中的任一链接的“子串”
+因为uri一般都是相对路径，而link_set中有可能是相对路径，也有可能是绝对路径，反正就是比uri“大”，所以看uri是否是link_set中的link的子串
