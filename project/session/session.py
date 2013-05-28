@@ -15,6 +15,7 @@ class Session():
         self.http_list = []
         self.pcap_packet_list = []
         
+        #get http_list  and pcap_packet_list
         cur = 0
         for msg in pcap_container.msg_list:
             sockets = ((msg["src_addr"], msg["src_port"]), ((msg["dst_addr"], msg["dst_port"])))
@@ -30,3 +31,27 @@ class Session():
             if (sockets in sockets_set):
                 self.pcap_packet_list.append(cur)
             cur += 1
+            
+        #statistic data
+        self.sp_delay = -1
+        self.upstream_traffic = -1
+        self.downstream_traffic = -1
+        self.resouce_distribution = {
+        "text_traffic" : 0,
+        "image_traffic" : 0, 
+        "multipart_traffic" : 0, 
+        "application_traffic" : 0, 
+        "message_traffic" : 0, 
+        "audio_traffic" : 0, 
+        "video_traffic" : 0, 
+        "unknown_traffic" : 0, 
+        
+        "text_count" : 0,   #sum of content len
+        "image_count" : 0, 
+        "multipart_count" : 0, 
+        "application_count" : 0, 
+        "message_count" : 0, 
+        "audio_count" : 0, 
+        "video_count" : 0, 
+        "unknown_count" : 0
+        }

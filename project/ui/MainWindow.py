@@ -12,6 +12,7 @@ from Ui_MainWindow import Ui_MainWindow
 
 from parse.Pcap_packet_container import *
 from analyzer.user_behavior_analyzer import *
+from analyzer.http_service_analyzer import *
 from session.session_container import *
 
 from User_behavior_statistic_window import User_behavior_statistic_window
@@ -27,8 +28,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
         self.pcap_container = None
-        self.session_container = Session_container()
+        self.session_container = None
         self.user_behavior_analyzer = None
+        self.http_service_analyzer = None
         self.connect(self.packet_table_widget, SIGNAL("itemClicked (QTableWidgetItem*)"), self.show_packet_info_tree)
     
     def show_ethernet_tree(self, pcap_packet):
@@ -358,15 +360,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         split the pcap_container's http_list into sessions
         """
         
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        
+        self.session_container = Session_container()
         self.session_container.split_session(self.pcap_container)
     
     @pyqtSignature("")
     def on_actionSession_stat_triggered(self):
         """
-        Slot documentation goes here.
+        get and store the statistic of all sessions
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.session_container == None):
+            self.session_container = Session_container()
+            self.session_container.split_session(self.pcap_container)
+        self.http_service_analyzer = Http_service_analyzer(self.session_container, self.pcap_container)
+        self.http_service_analyzer.analyze()
+        
+        cur = 0
+        for session in self.session_container.sessions:
+            print "session: %d-------------------------" % cur
+            cur += 1
+            print "sp: %f" % session.sp_delay
+            print "upstream_traffic: %d" % session.upstream_traffic
+            print "downstream_traffic: %d" % session.downstream_traffic
+            print "resource distribution: "
+            print session.resouce_distribution
     
     @pyqtSignature("")
     def on_actionResource_dis_triggered(self):
