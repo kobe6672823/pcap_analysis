@@ -394,14 +394,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print session.resouce_distribution
     
     @pyqtSignature("")
-    def on_actionResource_dis_triggered(self):
-        """
-        Slot documentation goes here.
-        """
-        # TODO: not implemented yet
-        raise NotImplementedError
-    
-    @pyqtSignature("")
     def on_actionExport_dev_bro_stat_triggered(self):
         """
         export the statistic of device and browser to excel file and draw pics of the statistic
