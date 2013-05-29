@@ -64,7 +64,6 @@
     </property>
     <addaction name="actionSession_split"/>
     <addaction name="actionSession_stat"/>
-    <addaction name="actionResource_dis"/>
     <addaction name="actionExport_session_stat"/>
    </widget>
    <widget class="QMenu" name="menuTcp">

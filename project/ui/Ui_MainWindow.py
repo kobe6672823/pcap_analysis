@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/hm/pcap_analysis/project/ui/MainWindow.ui'
 #
-# Created: Mon May 13 16:37:30 2013
+# Created: Wed May 29 15:01:38 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -91,7 +91,6 @@ class Ui_MainWindow(object):
         self.menuDevice_browser_info.addAction(self.actionExport_dev_bro_stat)
         self.menuSession.addAction(self.actionSession_split)
         self.menuSession.addAction(self.actionSession_stat)
-        self.menuSession.addAction(self.actionResource_dis)
         self.menuSession.addAction(self.actionExport_session_stat)
         self.menuTcp.addAction(self.actionTcp_stat)
         self.menuTcp.addAction(self.actionSession_conn_stat)
