@@ -454,10 +454,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionExport_session_stat_triggered(self):
         """
-        Slot documentation goes here.
+        export the statistics of session to excel file and draw pics of the statistics
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.session_container == None):
+            self.session_container = Session_container()
+            self.session_container.split_session(self.pcap_container)
+        self.http_service_analyzer = Http_service_analyzer(self.session_container, self.pcap_container)
+        self.http_service_analyzer.analyze()
+        
+        self.http_service_analyzer.export_to_xls()
+        self.http_service_analyzer.export_to_png()
+        warning_box = QMessageBox.warning(self, "confirm", "export done!")
     
     @pyqtSignature("")
     def on_actionProto_stat_triggered(self):

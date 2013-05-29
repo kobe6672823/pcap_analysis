@@ -37,6 +37,32 @@ class Session():
         self.upstream_traffic = -1
         self.downstream_traffic = -1
         self.resouce_distribution = {
+        "text_traffic" : 0, #sum of content len
+        "image_traffic" : 0, 
+        "multipart_traffic" : 0, 
+        "application_traffic" : 0, 
+        "message_traffic" : 0, 
+        "audio_traffic" : 0, 
+        "video_traffic" : 0, 
+        "unknown_traffic" : 0, 
+        
+        "text_count" : 0,   
+        "image_count" : 0, 
+        "multipart_count" : 0, 
+        "application_count" : 0, 
+        "message_count" : 0, 
+        "audio_count" : 0, 
+        "video_count" : 0, 
+        "unknown_count" : 0
+        }
+    
+    def clear_statistics(self):
+        """a method to clear all the statistics data"""
+        
+        self.sp_delay = -1
+        self.upstream_traffic = -1
+        self.downstream_traffic = -1
+        self.resouce_distribution = {
         "text_traffic" : 0,
         "image_traffic" : 0, 
         "multipart_traffic" : 0, 
