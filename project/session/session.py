@@ -22,15 +22,13 @@ class Session():
             if (sockets in sockets_set):
                 self.http_list.append(cur)
             cur += 1
-        cur = 0
         for pcap_packet in pcap_container.pcap_packets:
             #skip the ip or ethernet packets
             if (pcap_packet.top_layer < 3):
                 continue
             sockets = ((pcap_packet.ip.src, pcap_packet.tcp.src_port), (pcap_packet.ip.dst, pcap_packet.tcp.dst_port))
             if (sockets in sockets_set):
-                self.pcap_packet_list.append(cur)
-            cur += 1
+                self.pcap_packet_list.append(pcap_packet.pcap_num-1)
             
         #statistic data
         self.sp_delay = -1
