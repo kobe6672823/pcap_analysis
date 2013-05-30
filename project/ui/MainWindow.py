@@ -13,6 +13,7 @@ from Ui_MainWindow import Ui_MainWindow
 from parse.Pcap_packet_container import *
 from analyzer.user_behavior_analyzer import *
 from analyzer.http_service_analyzer import *
+from analyzer.traffic_model_analyzer import *
 from session.session_container import *
 
 from User_behavior_statistic_window import User_behavior_statistic_window
@@ -31,6 +32,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.session_container = None
         self.user_behavior_analyzer = None
         self.http_service_analyzer = None
+        self.traffic_model_analyzer = None
         self.connect(self.packet_table_widget, SIGNAL("itemClicked (QTableWidgetItem*)"), self.show_packet_info_tree)
     
     def show_ethernet_tree(self, pcap_packet):
@@ -414,18 +416,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionTcp_stat_triggered(self):
         """
-        Slot documentation goes here.
+        cal tcp connection statistics, include: tcp_conn_duration, tcp_conn_all_traffic, tcp_conn_effective_traffic
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.session_container == None):
+            self.session_container = Session_container()
+            self.session_container.split_session(self.pcap_container)
+        self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
+        self.traffic_model_analyzer.cal_tcp_conn_statistics()
+        print self.traffic_model_analyzer.tcp_conn_duration
+        print self.traffic_model_analyzer.tcp_conn_all_traffic
+        print self.traffic_model_analyzer.tcp_conn_effective_traffic
+        
     
     @pyqtSignature("")
     def on_actionSession_conn_stat_triggered(self):
         """
-        Slot documentation goes here.
+        cal session connection statistics, include: session_conn_duration, session_conn_all_traffic, session_conn_effective_traffic
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.session_container == None):
+            self.session_container = Session_container()
+            self.session_container.split_session(self.pcap_container)
+        self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
+        self.traffic_model_analyzer.cal_session_conn_statistics()
+        print self.traffic_model_analyzer.session_conn_duration
+        print self.traffic_model_analyzer.session_conn_all_traffic
+        print self.traffic_model_analyzer.session_conn_effective_traffic
     
     @pyqtSignature("")
     def on_actionCong_stat_triggered(self):
@@ -464,10 +487,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionProto_stat_triggered(self):
         """
-        Slot documentation goes here.
+        cal:
+        1, all traffic in transfer layer
+        2, all traffic in application layer()
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.session_container == None):
+            self.session_container = Session_container()
+            self.session_container.split_session(self.pcap_container)
+        self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
+        self.traffic_model_analyzer.cal_protocol_statistics()
+        print self.traffic_model_analyzer.udp_all_traffic
+        print self.traffic_model_analyzer.tcp_all_traffic
+        print self.traffic_model_analyzer.app_layer_all_traffic
     
     @pyqtSignature("")
     def on_actionExport_tcp_stat_triggered(self):

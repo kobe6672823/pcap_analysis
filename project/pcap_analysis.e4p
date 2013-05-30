@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project pcap_analysis -->
-<!-- Saved: 2013-05-28, 16:26:12 -->
+<!-- Saved: 2013-05-30, 09:21:21 -->
 <!-- Copyright (C) 2013 hm-dev, kobe6672823@qq.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -36,6 +36,7 @@
     <Source>session/session.py</Source>
     <Source>session/session_container.py</Source>
     <Source>analyzer/http_service_analyzer.py</Source>
+    <Source>analyzer/traffic_model_analyzer.py</Source>
   </Sources>
   <Forms>
     <Form>ui/MainWindow.ui</Form>
