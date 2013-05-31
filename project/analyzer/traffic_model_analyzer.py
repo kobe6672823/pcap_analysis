@@ -131,3 +131,83 @@ class Traffic_model_analyzer():
             if (self.pcap_container.pcap_packets[pcap_num].tcp != None):
                 self.tcp_conn_effective_traffic[sockets] += (len(self.pcap_container.pcap_packets[pcap_num].tcp.message) - \
                     self.pcap_container.pcap_packets[pcap_num].tcp.header_len)
+
+    def export_to_xls(self):
+        """a method to export the data in the analyzer to the xls file"""
+        
+        if (not os.path.exists("traffic_model_analyzer")):
+            os.mkdir("traffic_model_analyzer")
+        
+        #sheet: tcp connection statistics
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet("tcp connection statistics")
+        sockets = self.tcp_conn_duration.keys()
+        ws.write(1, 0, "duration")
+        ws.write(2, 0, "all traffic")
+        ws.write(3, 0, "effective traffic")
+        cur = 1
+        for socket in sockets:
+            ws.write(0, cur, repr(socket))
+            ws.write(1, cur, self.tcp_conn_duration[socket])
+            ws.write(2, cur, self.tcp_conn_all_traffic[socket])
+            ws.write(3, cur, self.tcp_conn_effective_traffic[socket])
+            cur += 1
+
+        #sheet: session connection statistics
+        ws = wb.add_sheet("session connection statistics")
+        ws.write(1, 0, "duration")
+        ws.write(2, 0, "all traffic")
+        ws.write(3, 0, "effective traffic")
+        cur = 0
+        for duration in self.session_conn_duration:
+            ws.write(0, cur+1, "session_" + str(cur))
+            ws.write(1, cur+1, self.session_conn_duration[cur])
+            ws.write(2, cur+1, self.session_conn_all_traffic[cur])
+            ws.write(3, cur+1, self.session_conn_effective_traffic[cur])
+            cur += 1
+
+        #sheet: protocol classified statistics
+        ws = wb.add_sheet("protocol classified statistics")
+        ws.write(0, 0, "tcp all traffic")
+        ws.write(0, 1, "udp all traffic")
+        ws.write(1, 0, self.tcp_all_traffic)
+        ws.write(1, 1, self.udp_all_traffic)
+        app_layer_protos = self.app_layer_all_traffic.keys()
+        cur = 0
+        for proto in app_layer_protos:
+            ws.write(2, cur, proto)
+            ws.write(3, cur, self.app_layer_all_traffic[proto])
+            cur += 1
+        
+        xl_file_name = "traffic_model_analyzer/" + "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + \
+            '_traffic_model_stat.xls'
+        wb.save(xl_file_name)
+    
+    def export_to_png(self):
+        """a method to export protocol classified statistics to bar chart"""
+
+        plt.figure() 
+        plt.title("protocol classified statistics")
+        plt.xlabel('application layer protocols')
+        plt.ylabel('traffic(in bytes)')
+        
+        table_headers = self.app_layer_all_traffic.keys()
+        plt.xticks(range(0, len(table_headers)), table_headers, rotation=30)
+        eps = 1e-7
+        bar_height = [self.app_layer_all_traffic[key] + eps for key in table_headers]
+        rect = plt.bar(left = range(0, len(table_headers)), height = bar_height, width = 0.3,align="center")
+        self._autolabel(plt, rect)
+        plt.tight_layout()
+        png_file_name = "traffic_model_analyzer/" + "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + \
+            '_protocol_classified_stat.png'
+        plt.savefig(png_file_name, dpi=75)
+    
+    def _autolabel(self, plt, rects):
+        """a method to label the height of the bar in the bar chart"""
+        
+        for rect in rects:
+            height = int(rect.get_height())
+            if (height > 0):
+                plt.text(rect.get_x()+rect.get_width()/2., 1.03*height, '%s' % int(height))
+
+    

@@ -508,5 +508,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Slot documentation goes here.
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+        if (self.session_container == None):
+            self.session_container = Session_container()
+            self.session_container.split_session(self.pcap_container)
+        self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
+        self.traffic_model_analyzer.cal_tcp_conn_statistics()
+        self.traffic_model_analyzer.cal_session_conn_statistics()
+        self.traffic_model_analyzer.cal_protocol_statistics()
+        self.traffic_model_analyzer.export_to_xls()
+        self.traffic_model_analyzer.export_to_png()
+        warning_box = QMessageBox.warning(self, "confirm", "export done!")
