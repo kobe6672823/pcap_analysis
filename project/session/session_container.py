@@ -131,4 +131,22 @@ class Session_container():
             #init a new session
             new_session = Session(init_req, init_response, sockets_set, pcap_container)
             self.sessions.append(new_session)
-    
+        
+        #test the sessions are complete or not, and output all the results, a complete session means: its req_num == response_num
+        complete_session_num = 0
+        for session in self.sessions:
+            req_num = 0
+            response_num = 0
+            for msg_pos in session.http_list:
+                msg = pcap_container.http_list[msg_pos]
+                if msg != None:
+                    if (msg.http_type == 1):
+                        req_num += 1
+                    elif (msg.http_type == 2):
+                        response_num += 1
+            if req_num == response_num:
+                complete_session_num += 1
+                print "complete session!"
+            else:
+                print "incomplete session!"
+        print "session complete rate:" + str(complete_session_num / len(self.sessions))
