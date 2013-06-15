@@ -14,6 +14,7 @@ from parse.Pcap_packet_container import *
 from analyzer.user_behavior_analyzer import *
 from analyzer.http_service_analyzer import *
 from analyzer.traffic_model_analyzer import *
+from analyzer.congestion_control_analyzer import *
 from session.session_container import *
 
 from User_behavior_statistic_window import User_behavior_statistic_window
@@ -33,6 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.user_behavior_analyzer = None
         self.http_service_analyzer = None
         self.traffic_model_analyzer = None
+        self.congestion_control_analyzer = None
         self.connect(self.packet_table_widget, SIGNAL("itemClicked (QTableWidgetItem*)"), self.show_packet_info_tree)
     
     def show_ethernet_tree(self, pcap_packet):
@@ -453,18 +455,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionCong_stat_triggered(self):
         """
-        Slot documentation goes here.
+        cal all statistics about congestion control
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+            
+        self.congestion_control_analyzer = Congestion_control_analyzer(self.pcap_container)
+        self.congestion_control_analyzer.analyze()
+        print self.congestion_control_analyzer.avg_init_wnd_size
+        print self.congestion_control_analyzer.avg_rtt
+        print self.congestion_control_analyzer.retransmission_prob
+        print self.congestion_control_analyzer.retransmission_traffic
     
     @pyqtSignature("")
     def on_actionExport_cong_stat_triggered(self):
         """
-        Slot documentation goes here.
+        export the statistics of congestion control to excel file and draw pics of the statistics
         """
-        # TODO: not implemented yet
-        raise NotImplementedError
+        if (self.pcap_container == None):
+            warning_box = QMessageBox.warning(self, "warn", "please load a pcap file!")
+            return
+            
+        self.congestion_control_analyzer = Congestion_control_analyzer(self.pcap_container)
+        self.congestion_control_analyzer.analyze()
+        self.congestion_control_analyzer.export_to_xls()
+        warning_box = QMessageBox.warning(self, "confirm", "export done!")
     
     @pyqtSignature("")
     def on_actionExport_session_stat_triggered(self):
@@ -506,7 +522,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSignature("")
     def on_actionExport_tcp_stat_triggered(self):
         """
-        Slot documentation goes here.
+        export the statistics of tcp to excel file and draw pics of the statistics
         """
         
         if (self.pcap_container == None):
