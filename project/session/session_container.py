@@ -71,14 +71,14 @@ def _is_in_link_set(uri, link_set):
             return True
     return False
         
-def _get_sockets_set(pcap_container, link_set):
+def _get_sockets_set(init_req, pcap_container, link_set):
     """a method to sockets set according to the link_set:   
     if a http's uri in the linkset, then the sockets related to this http will be added into the sockets set"""
     
     cur = 0
     sockets_set = set()
     for http in pcap_container.http_list:
-        if (http != None and http.http_type == 1 and _is_in_link_set(http.header_fields["uri"], link_set)):
+        if (http != None and http.http_type == 1 and _is_in_link_set(http.header_fields["uri"], link_set) or cur == init_req):
             sockets = ((pcap_container.msg_list[cur]["src_addr"], pcap_container.msg_list[cur]["src_port"]), 
                 ((pcap_container.msg_list[cur]["dst_addr"], pcap_container.msg_list[cur]["dst_port"])))
             sockets_set.add(sockets)
@@ -127,7 +127,7 @@ class Session_container():
             link_set = _extract_link(html_src)
             
             #from the link_set, find related request(according "uri"), and get the sockets_set
-            sockets_set = _get_sockets_set(pcap_container, link_set)
+            sockets_set = _get_sockets_set(init_req, pcap_container, link_set)
             #init a new session
             new_session = Session(init_req, init_response, sockets_set, pcap_container)
             self.sessions.append(new_session)
@@ -149,4 +149,4 @@ class Session_container():
                 print "complete session!"
             else:
                 print "incomplete session!"
-        print "session complete rate:" + str(complete_session_num / len(self.sessions))
+        print "session complete rate:" + str(float(complete_session_num) / len(self.sessions))

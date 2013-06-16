@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/hm/pcap_analysis/project/ui/MainWindow.ui'
 #
-# Created: Wed May 29 15:01:38 2013
+# Created: Sun Jun 16 15:03:37 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,8 +57,6 @@ class Ui_MainWindow(object):
         self.menuTcp.setObjectName(_fromUtf8("menuTcp"))
         self.menuConguestion_control = QtGui.QMenu(self.menuBar)
         self.menuConguestion_control.setObjectName(_fromUtf8("menuConguestion_control"))
-        self.menuExport_all_statistics = QtGui.QMenu(self.menuBar)
-        self.menuExport_all_statistics.setObjectName(_fromUtf8("menuExport_all_statistics"))
         MainWindow.setMenuBar(self.menuBar)
         self.actionLoad_pcap_file = QtGui.QAction(MainWindow)
         self.actionLoad_pcap_file.setObjectName(_fromUtf8("actionLoad_pcap_file"))
@@ -103,7 +101,6 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuSession.menuAction())
         self.menuBar.addAction(self.menuTcp.menuAction())
         self.menuBar.addAction(self.menuConguestion_control.menuAction())
-        self.menuBar.addAction(self.menuExport_all_statistics.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -116,7 +113,6 @@ class Ui_MainWindow(object):
         self.menuSession.setTitle(_translate("MainWindow", "session", None))
         self.menuTcp.setTitle(_translate("MainWindow", "tcp", None))
         self.menuConguestion_control.setTitle(_translate("MainWindow", "congestion_control", None))
-        self.menuExport_all_statistics.setTitle(_translate("MainWindow", "export all statistics", None))
         self.actionLoad_pcap_file.setText(_translate("MainWindow", "load pcap file", None))
         self.actionDev_bro_stat.setText(_translate("MainWindow", "info statistic", None))
         self.actionSession_split.setText(_translate("MainWindow", "session split", None))

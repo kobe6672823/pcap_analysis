@@ -30,6 +30,7 @@ class Http_service_analyzer():
     def _cal_sp_delay(self, session):
         """a method to cal a session's sp_delay"""
         
+        print repr(session.http_list)
         first_http = session.http_list[0]
         last_http = session.http_list[-1]
         #a http packet consists of one or more pcap packets, "lp_in_first_http" is a http packet's last pcap packet
