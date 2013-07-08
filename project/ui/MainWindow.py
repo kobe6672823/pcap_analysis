@@ -263,10 +263,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for pcap_packet in pcap_container.pcap_packets:
             
             #skip the packet that I don't need(only need tcp/ip packet)
-            if (pcap_packet.ethernet.ether_type != "ETHERNET II" or 
-                pcap_packet.ethernet.type != "IP" or 
-                pcap_packet.ip.protocol != "TCP"):
-                continue
+            #if (pcap_packet.ethernet.ether_type != "ETHERNET II" or 
+            #    pcap_packet.ethernet.type != "IP" or 
+            #    pcap_packet.ip.protocol != "TCP"):
+            #    cur_num += 1
+            #    continue
                 
             #set number
             newItem = QTableWidgetItem(str(cur_num+1))
@@ -280,15 +281,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.packet_table_widget.setItem(cur_num, 1, newItem)
             
             #set Source
-            newItem = QTableWidgetItem(pcap_packet.ip.src)
+            if (pcap_packet.top_layer == 1):
+                newItem = QTableWidgetItem(pcap_packet.ethernet.src_addr)
+            else:
+                newItem = QTableWidgetItem(pcap_packet.ip.src)
             self.packet_table_widget.setItem(cur_num, 2, newItem)
             
             #set Destination
-            newItem = QTableWidgetItem(pcap_packet.ip.dst)
+            if (pcap_packet.top_layer == 1):
+                newItem = QTableWidgetItem(pcap_packet.ethernet.dst_addr)
+            else:
+                newItem = QTableWidgetItem(pcap_packet.ip.dst)
             self.packet_table_widget.setItem(cur_num, 3, newItem)
             
             #set Protocol
-            newItem = QTableWidgetItem(pcap_packet.ip.protocol)
+            if (pcap_packet.top_layer == 1):
+                newItem = QTableWidgetItem(pcap_packet.ethernet.ether_type or "ethernet")
+            elif (pcap_packet.top_layer == 2):
+                newItem = QTableWidgetItem(pcap_packet.ethernet.type)
+            else:
+                newItem = QTableWidgetItem(pcap_packet.ip.protocol)
             self.packet_table_widget.setItem(cur_num, 4, newItem)
             
             cur_num += 1
