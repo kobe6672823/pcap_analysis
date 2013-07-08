@@ -173,6 +173,15 @@ class Http_service_analyzer():
                 ws.write(4, cur_col, session.resouce_distribution[header])
                 cur_col += 1
         
+        #export pipeling concurrence statistics
+        ws = wb.add_sheet("pipeling concurrence")
+        headers = self.pipelining.keys()
+        cur = 0
+        for header in headers:
+            ws.write(0, cur, str(header))
+            ws.write(1, cur, self.pipelining[header][0])
+            cur += 1
+        
         xl_file_name = "http_service_analyzer/" + "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + \
             '_http_service_stat.xls'
         wb.save(xl_file_name)
