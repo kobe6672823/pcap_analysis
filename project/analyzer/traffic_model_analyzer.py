@@ -117,6 +117,8 @@ class Traffic_model_analyzer():
         tcp_stream = self.pcap_container.tcp_stream_container[sockets]
         min_pcap_num = min(tcp_stream.pcap_num_list)
         max_pcap_num = max(tcp_stream.pcap_num_list)
+        if (max_pcap_num >= len(self.pcap_container.packet_headers)):
+            max_pcap_num = len(self.pcap_container.packet_headers) - 1
         self.tcp_conn_duration[sockets] = self.pcap_container.packet_headers[max_pcap_num]['ts'] - \
             self.pcap_container.packet_headers[min_pcap_num]['ts']
                 
@@ -127,6 +129,8 @@ class Traffic_model_analyzer():
         self.tcp_conn_all_traffic[sockets] = 0
         self.tcp_conn_effective_traffic[sockets] = 0
         for pcap_num in tcp_stream.pcap_num_list:
+            if (pcap_num >= len(self.pcap_container.packet_headers)):
+                continue
             self.tcp_conn_all_traffic[sockets] += self.pcap_container.packet_headers[pcap_num]['cap_len']
             if (self.pcap_container.pcap_packets[pcap_num].tcp != None):
                 self.tcp_conn_effective_traffic[sockets] += (len(self.pcap_container.pcap_packets[pcap_num].tcp.message) - \

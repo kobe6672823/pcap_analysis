@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Tasks SYSTEM "Tasks-4.2.dtd">
 <!-- eric4 tasks file for project pcap_analysis -->
-<!-- Saved: 2013-06-15, 15:05:31 -->
+<!-- Saved: 2013-06-17, 10:46:33 -->
 <Tasks version="4.2">
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO:to decrease the memory overhead</Summary>
@@ -13,18 +13,27 @@
     </Resource>
   </Task>
   <Task priority="1" completed="False" bugfix="False">
+    <Summary>TODO: need to store the msg_number into the tcp_stream????then the tcp_stream know what msgs it has</Summary>
+    <Description></Description>
+    <Created>2013-06-16, 14:54:30</Created>
+    <Resource>
+      <Filename>parse/Pcap_packet_container.py</Filename>
+      <Linenumber>139</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: a tiny bug: should find out the minimum pcap_num in the pcap_num_list, in stead of the last one</Summary>
     <Description></Description>
-    <Created>2013-06-05, 16:00:06</Created>
+    <Created>2013-06-16, 15:05:51</Created>
     <Resource>
       <Filename>analyzer/http_service_analyzer.py</Filename>
-      <Linenumber>36</Linenumber>
+      <Linenumber>37</Linenumber>
     </Resource>
   </Task>
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: current method is using the beautiful soup to get all the href and src, but it is not complete, some links in the script</Summary>
     <Description></Description>
-    <Created>2013-06-15, 13:53:42</Created>
+    <Created>2013-06-16, 15:39:39</Created>
     <Resource>
       <Filename>session/session_container.py</Filename>
       <Linenumber>62</Linenumber>
@@ -33,19 +42,10 @@
   <Task priority="1" completed="False" bugfix="False">
     <Summary>TODO: improve the algorithm to test a uri in the set or not, the current method is really stupid and inefficient</Summary>
     <Description></Description>
-    <Created>2013-06-15, 13:53:42</Created>
+    <Created>2013-06-16, 15:39:39</Created>
     <Resource>
       <Filename>session/session_container.py</Filename>
       <Linenumber>68</Linenumber>
-    </Resource>
-  </Task>
-  <Task priority="1" completed="False" bugfix="False">
-    <Summary>TODO: need to store the msg_number into the tcp_stream????then the tcp_stream know what msgs it has</Summary>
-    <Description></Description>
-    <Created>2013-06-15, 14:07:43</Created>
-    <Resource>
-      <Filename>parse/Pcap_packet_container.py</Filename>
-      <Linenumber>139</Linenumber>
     </Resource>
   </Task>
 </Tasks>

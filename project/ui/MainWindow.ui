@@ -82,17 +82,11 @@
     <addaction name="actionCong_stat"/>
     <addaction name="actionExport_cong_stat"/>
    </widget>
-   <widget class="QMenu" name="menuExport_all_statistics">
-    <property name="title">
-     <string>export all statistics</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuDevice_browser_info"/>
    <addaction name="menuSession"/>
    <addaction name="menuTcp"/>
    <addaction name="menuConguestion_control"/>
-   <addaction name="menuExport_all_statistics"/>
   </widget>
   <action name="actionLoad_pcap_file">
    <property name="text">
