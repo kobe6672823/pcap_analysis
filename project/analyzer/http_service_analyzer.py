@@ -34,9 +34,9 @@ class Http_service_analyzer():
         first_http = session.http_list[0]
         last_http = session.http_list[-1]
         #a http packet consists of one or more pcap packets, "lp_in_first_http" is a http packet's last pcap packet
-        #TODO: a tiny bug: should find out the minimum pcap_num in the pcap_num_list, in stead of the last one
-        lp_in_first_http = self.pcap_container.msg_list[first_http]["pcap_num_list"][-1]
-        lp_in_last_http = self.pcap_container.msg_list[last_http]["pcap_num_list"][-1]
+        #TODO: a tiny bug: sp_delay is different from the delay calculated from the data according to the wireshark(0.x ms)
+        lp_in_first_http = max(self.pcap_container.msg_list[first_http]["pcap_num_list"])
+        lp_in_last_http = max(self.pcap_container.msg_list[last_http]["pcap_num_list"])
         begin = self.pcap_container.packet_headers[lp_in_first_http]["ts"]
         end = self.pcap_container.packet_headers[lp_in_last_http]["ts"]
         delay = end - begin
