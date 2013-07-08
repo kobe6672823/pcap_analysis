@@ -408,6 +408,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print "downstream_traffic: %d" % session.downstream_traffic
             print "resource distribution: "
             print session.resouce_distribution
+        print "----------------------------pipelining concurence statistics:------------------------------"
+        for key in self.http_service_analyzer.pipelining:
+            print "sockets: %s  ---->>>> %d" % (key, self.http_service_analyzer.pipelining[key][0])
+        print "----------------------------multipart concurence statistics:------------------------------"
+        for key in self.http_service_analyzer.multipart:
+            print "sockets: %s  ---->>>> %d" % (key, self.http_service_analyzer.multipart[key][0])
     
     @pyqtSignature("")
     def on_actionExport_dev_bro_stat_triggered(self):

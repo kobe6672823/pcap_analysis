@@ -17,6 +17,8 @@ class Http_service_analyzer():
         #clear the statistics data in all sessions
         for session in self.session_container.sessions:
             session.clear_statistics()
+        self.pipelining = {}    #for pipelining statistics, dist: sockets -->> [max, cnt]
+        self.multipart = {} #for multipart concurrence statistics, dict: sockets -->> [max, cnt]
         
     def analyze(self):
         """a method to cal all the sessions' statistic data"""
@@ -26,7 +28,59 @@ class Http_service_analyzer():
             self._cal_upstream_traffic(session)
             self._cal_downstream_traffic(session)
             self._cal_distribution(session)
-            
+        
+        #pipelining statistics
+        self.__cal_pipelining_concurrence()
+        self.__cal_multipart_concurrence()
+    
+    def __cal_pipelining_concurrence(self):
+        """a method to cal pipelining concurrence"""
+        
+        pos = 0
+        for http in self.pcap_container.http_list:
+            if (http.http_type == HTTP_REQUEST):    #http request, pipeling Concurrence(cnt) += 1
+                sockets = ((self.pcap_container.msg_list[pos]["src_addr"], self.pcap_container.msg_list[pos]["src_port"]), 
+                           (self.pcap_container.msg_list[pos]["dst_addr"], self.pcap_container.msg_list[pos]["dst_port"]))
+                if (not self.pipelining.has_key(sockets)):
+                    self.pipelining[sockets] = [0, 0]
+                self.pipelining[sockets][1] += 1
+            else:
+                sockets = ((self.pcap_container.msg_list[pos]["dst_addr"], self.pcap_container.msg_list[pos]["dst_port"]), 
+                           (self.pcap_container.msg_list[pos]["src_addr"], self.pcap_container.msg_list[pos]["src_port"]))
+                if (not self.pipelining.has_key(sockets)):
+                    pos += 1
+                    continue
+                else:
+                    if (self.pipelining[sockets][0] < self.pipelining[sockets][1]): # if the current pipeling Concurrence(cnt) > max, then max = pipeling Concurrence(cnt)
+                        self.pipelining[sockets][0] = self.pipelining[sockets][1]
+                    self.pipelining[sockets][1] = 0
+            pos += 1
+    
+    #TODO: find a website that use multipart to uplaod file to test this method.....
+    def __cal_multipart_concurrence(self):
+        """a method to cal pipelining concurrence"""
+        
+        pos = 0
+        for http in self.pcap_container.http_list:
+            if (http.http_type == HTTP_REQUEST and http.header_fields.has_key("content-type")
+                and http.header_fields["content-type"].find("multipart") != -1):    #http request and has content-type(means the client upload file to server)
+                sockets = ((self.pcap_container.msg_list[pos]["src_addr"], self.pcap_container.msg_list[pos]["src_port"]), 
+                           (self.pcap_container.msg_list[pos]["dst_addr"], self.pcap_container.msg_list[pos]["dst_port"]))
+                if (not self.multipart.has_key(sockets)):
+                    self.multipart[sockets] = [0, 0]
+                self.multipart[sockets][1] += 1
+            elif (http.http_type == HTTP_RESPONSE):
+                sockets = ((self.pcap_container.msg_list[pos]["dst_addr"], self.pcap_container.msg_list[pos]["dst_port"]), 
+                           (self.pcap_container.msg_list[pos]["src_addr"], self.pcap_container.msg_list[pos]["src_port"]))
+                if (not self.multipart.has_key(sockets)):
+                    pos += 1
+                    continue
+                else:
+                    if (self.multipart[sockets][0] < self.multipart[sockets][1]): # if the current pipeling Concurrence(cnt) > max, then max = pipeling Concurrence(cnt)
+                        self.multipart[sockets][0] = self.multipart[sockets][1]
+                    self.multipart[sockets][1] = 0
+            pos += 1
+        
     def _cal_sp_delay(self, session):
         """a method to cal a session's sp_delay"""
         
