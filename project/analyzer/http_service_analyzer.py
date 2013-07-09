@@ -19,6 +19,7 @@ class Http_service_analyzer():
             session.clear_statistics()
         self.pipelining = {}    #for pipelining statistics, dist: sockets -->> [max, cnt]
         self.multipart = {} #for multipart concurrence statistics, dict: sockets -->> [max, cnt]
+        self.session_tcp_concurrence = {}   #a dict for storing all sessions' tcp concurrence: session name -->> tcp concurrence
         
     def analyze(self):
         """a method to cal all the sessions' statistic data"""
@@ -28,11 +29,45 @@ class Http_service_analyzer():
             self._cal_upstream_traffic(session)
             self._cal_downstream_traffic(session)
             self._cal_distribution(session)
+            self.__cal_session_tcp_concurrence(session)
         
         #pipelining statistics
         self.__cal_pipelining_concurrence()
         self.__cal_multipart_concurrence()
     
+    def __is_a_syn_pkt(self, pkt):
+        """a method to judge a pcap_packet is a syn packet or not"""
+        
+        if (pkt.top_layer < 3):
+            return False
+        if (pkt.tcp.src_port != 80 and pkt.tcp.flag_syn == 1 and pkt.tcp.flag_ack == 0):
+            return True
+        return False
+    
+    def __is_a_fin_pkt(self, pkt):
+        """a method to judge a pcap_packet is a fin packet or not"""
+        
+        if (pkt.top_layer < 3):
+            return False
+        if (pkt.tcp.src_port != 80 and pkt.tcp.flag_fin == 1 and pkt.tcp.flag_ack == 1):
+            return True
+        return False
+    
+    def __cal_session_tcp_concurrence(self, session):
+        """a method to cal all sessions' tcp concurrence"""
+        
+        cnt = 0
+        max_concurrence = 0
+        for pcap_pkt in session.pcap_packet_list:
+            if (self.__is_a_syn_pkt(self.pcap_container.pcap_packets[pcap_pkt])):
+                cnt += 1
+            if (self.__is_a_fin_pkt(self.pcap_container.pcap_packets[pcap_pkt])):
+                if (cnt > max_concurrence):
+                    max_concurrence = cnt
+                cnt -= 1
+        host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+        self.session_tcp_concurrence[host_name] = max_concurrence
+        
     def __cal_pipelining_concurrence(self):
         """a method to cal pipelining concurrence"""
         
