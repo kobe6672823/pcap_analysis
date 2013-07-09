@@ -401,7 +401,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         cur = 0
         for session in self.session_container.sessions:
-            print "session: %d-------------------------" % cur
+            print "session: %s-------------------------" % self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
             cur += 1
             print "sp: %f" % session.sp_delay
             print "upstream_traffic: %d" % session.upstream_traffic

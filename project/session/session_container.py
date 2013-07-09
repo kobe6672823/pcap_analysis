@@ -79,6 +79,10 @@ def _get_sockets_set(init_req, pcap_container, link_set):
     sockets_set = set()
     for http in pcap_container.http_list:
         if (http != None and http.http_type == 1 and _is_in_link_set(http.header_fields["uri"], link_set) or cur == init_req):
+            if (http.header_fields["uri"] == "/" and 
+                http.header_fields["host"] != pcap_container.http_list[init_req].header_fields["host"]):
+                cur += 1
+                continue
             sockets = ((pcap_container.msg_list[cur]["src_addr"], pcap_container.msg_list[cur]["src_port"]), 
                 ((pcap_container.msg_list[cur]["dst_addr"], pcap_container.msg_list[cur]["dst_port"])))
             sockets_set.add(sockets)
