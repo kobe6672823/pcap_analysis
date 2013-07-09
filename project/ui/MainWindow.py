@@ -401,11 +401,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         cur = 0
         for session in self.session_container.sessions:
-            print "session: %s-------------------------" % self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+            host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+            print "session: %s-------------------------" % host_name
             cur += 1
             print "sp: %f" % session.sp_delay
             print "upstream_traffic: %d" % session.upstream_traffic
             print "downstream_traffic: %d" % session.downstream_traffic
+            print "tcp concurrence: %d" % self.http_service_analyzer.session_tcp_concurrence[host_name]
             print "resource distribution: "
             print session.resouce_distribution
         print "----------------------------pipelining concurence statistics:------------------------------"
