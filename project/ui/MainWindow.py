@@ -447,9 +447,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.session_container.split_session(self.pcap_container)
         self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
         self.traffic_model_analyzer.cal_tcp_conn_statistics()
+        print 
+        print "--------------tcp_conn_duration-------------"
         print self.traffic_model_analyzer.tcp_conn_duration
+        print 
+        
+        print "--------------tcp_conn_all_traffic-------------"
         print self.traffic_model_analyzer.tcp_conn_all_traffic
+        print 
+        
+        print "--------------tcp_conn_effective_traffic-------------"
         print self.traffic_model_analyzer.tcp_conn_effective_traffic
+        print 
         
     
     @pyqtSignature("")
