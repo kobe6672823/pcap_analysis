@@ -401,7 +401,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         cur = 0
         for session in self.session_container.sessions:
-            print "session: %d-------------------------" % cur
+            print "session: %s-------------------------" % self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
             cur += 1
             print "sp: %f" % session.sp_delay
             print "upstream_traffic: %d" % session.upstream_traffic
@@ -447,9 +447,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.session_container.split_session(self.pcap_container)
         self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
         self.traffic_model_analyzer.cal_tcp_conn_statistics()
+        print 
+        print "--------------tcp_conn_duration-------------"
         print self.traffic_model_analyzer.tcp_conn_duration
+        print 
+        
+        print "--------------tcp_conn_all_traffic-------------"
         print self.traffic_model_analyzer.tcp_conn_all_traffic
+        print 
+        
+        print "--------------tcp_conn_effective_traffic-------------"
         print self.traffic_model_analyzer.tcp_conn_effective_traffic
+        print 
         
     
     @pyqtSignature("")
@@ -466,8 +475,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.session_container.split_session(self.pcap_container)
         self.traffic_model_analyzer = Traffic_model_analyzer(self.pcap_container, self.session_container)
         self.traffic_model_analyzer.cal_session_conn_statistics()
+        
+        print 
+        print "--------------session_conn_duration-------------"
         print self.traffic_model_analyzer.session_conn_duration
+        print 
+        
+        print 
+        print "--------------session_conn_all_traffic-------------"
         print self.traffic_model_analyzer.session_conn_all_traffic
+        print 
+        
+        print 
+        print "--------------session_conn_effective_traffic-------------"
         print self.traffic_model_analyzer.session_conn_effective_traffic
     
     @pyqtSignature("")
@@ -481,10 +501,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
         self.congestion_control_analyzer = Congestion_control_analyzer(self.pcap_container)
         self.congestion_control_analyzer.analyze()
-        print self.congestion_control_analyzer.avg_init_wnd_size
-        print self.congestion_control_analyzer.avg_rtt
-        print self.congestion_control_analyzer.retransmission_prob
-        print self.congestion_control_analyzer.retransmission_traffic
+        print "avg_init_wnd_size: " + str(self.congestion_control_analyzer.avg_init_wnd_size)
+        print "avg_rtt: " + str(self.congestion_control_analyzer.avg_rtt)
+        print "retransmission_prob: " + str(self.congestion_control_analyzer.retransmission_prob)
+        print "retransmission_traffic: " + str(self.congestion_control_analyzer.retransmission_traffic)
     
     @pyqtSignature("")
     def on_actionExport_cong_stat_triggered(self):

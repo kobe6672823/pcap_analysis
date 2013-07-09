@@ -84,11 +84,11 @@ class Http_service_analyzer():
     def _cal_sp_delay(self, session):
         """a method to cal a session's sp_delay"""
         
+        print "session %s http_list:" % self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
         print repr(session.http_list)
         first_http = session.http_list[0]
         last_http = session.http_list[-1]
         #a http packet consists of one or more pcap packets, "lp_in_first_http" is a http packet's last pcap packet
-        #TODO: a tiny bug: sp_delay is different from the delay calculated from the data according to the wireshark(0.x ms)
         lp_in_first_http = max(self.pcap_container.msg_list[first_http]["pcap_num_list"])
         lp_in_last_http = max(self.pcap_container.msg_list[last_http]["pcap_num_list"])
         begin = self.pcap_container.packet_headers[lp_in_first_http]["ts"]
@@ -154,10 +154,9 @@ class Http_service_analyzer():
             os.mkdir("http_service_analyzer")
         
         wb = xlwt.Workbook()
-        cur = 1
         for session in self.session_container.sessions:
-            sheet_name = "session_" + str(cur)
-            cur += 1
+            host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+            sheet_name = "session_" + host_name
             ws = wb.add_sheet(sheet_name)
             ws.write(0, 0, "sp_delay")
             ws.write(1, 0, session.sp_delay)
@@ -189,7 +188,6 @@ class Http_service_analyzer():
     def export_to_png(self):
         """a method to export statistics to bar chart"""
 
-        cur = 1
         #traffic statistics
         for session in self.session_container.sessions:
             plt.figure() 
@@ -211,13 +209,12 @@ class Http_service_analyzer():
             rect = plt.bar(left = range(0, len(table_headers)), height = bar_height, width = 0.3,align="center")
             self._autolabel(plt, rect)
             plt.tight_layout()
+            host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
             png_file_name = "http_service_analyzer/" + "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + \
-                '_session_' + str(cur) + '_resource_distribution_traffic_stat.png'
+                '_session_' + host_name + '_resource_distribution_traffic_stat.png'
             plt.savefig(png_file_name, dpi=75)
-            cur += 1
         
         #number statistics
-        cur = 1
         for session in self.session_container.sessions:
             plt.figure() 
             plt.title("resource distribution statistics(number)")
@@ -238,10 +235,10 @@ class Http_service_analyzer():
             rect = plt.bar(left = range(0, len(table_headers)), height = bar_height, width = 0.3,align="center")
             self._autolabel(plt, rect)
             plt.tight_layout()
+            host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
             png_file_name = "http_service_analyzer/" + "_".join(str(self.pcap_container.pcap_file_name.split("/")[-1]).split('.')) + \
-                '_session_' + str(cur) + '_resource_distribution_number_stat.png'
+                '_session_' + host_name + '_resource_distribution_number_stat.png'
             plt.savefig(png_file_name, dpi=75)
-            cur += 1
     
     def _autolabel(self, plt, rects):
         """a method to label the height of the bar in the bar chart"""
