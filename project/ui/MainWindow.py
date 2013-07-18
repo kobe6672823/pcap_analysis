@@ -401,7 +401,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         cur = 0
         for session in self.session_container.sessions:
-            host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+            try:
+                host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+            except:
+                host_name = "unknown(no_host_field)"
             print "session: %s-------------------------" % host_name
             cur += 1
             print "sp: %f" % session.sp_delay
