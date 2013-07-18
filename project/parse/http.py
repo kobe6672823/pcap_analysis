@@ -52,8 +52,11 @@ class Http(Protocol):
         
         if (self.http_header[0:6] == "HTTP/1"):
             self.http_type = HTTP_RESPONSE
-            self.header_fields["status_code"] = int(self.http_header[9:12])
-            self.header_fields["status"] = str(self.http_header[13:15])
+            try:
+                self.header_fields["status_code"] = int(self.http_header[9:12])
+                self.header_fields["status"] = str(self.http_header[13:15])
+            except:
+                print "illegal http request format"
         else:
             self.http_type = HTTP_REQUEST
             self.header_fields["request_method"] = str(self.http_header[0:3])

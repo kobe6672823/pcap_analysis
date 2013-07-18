@@ -65,7 +65,10 @@ class Http_service_analyzer():
                 if (cnt > max_concurrence):
                     max_concurrence = cnt
                 cnt -= 1
-        host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+        try:
+            host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+        except:
+            host_name = "unknown(no_host_field)"
         self.session_tcp_concurrence[host_name] = max_concurrence
         
     def __cal_pipelining_concurrence(self):
@@ -119,7 +122,10 @@ class Http_service_analyzer():
     def _cal_sp_delay(self, session):
         """a method to cal a session's sp_delay"""
         
-        print "session %s http_list:" % self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+        try:
+            print "session %s http_list:" % self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
+        except:
+            print "unknow host session: http_list:"
         print repr(session.http_list)
         first_http = session.http_list[0]
         last_http = session.http_list[-1]

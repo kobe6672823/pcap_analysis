@@ -67,8 +67,11 @@ def _is_in_link_set(uri, link_set):
     
     #TODO: improve the algorithm to test a uri in the set or not, the current method is really stupid and inefficient
     for link in link_set:
-        if (link.find(uri) != -1):
-            return True
+        try:
+            if (link.find(uri) != -1):
+                return True
+        except:
+            return False
     return False
         
 def _get_sockets_set(init_req, pcap_container, link_set):
@@ -153,4 +156,7 @@ class Session_container():
                 print "complete session!"
             else:
                 print "incomplete session!"
-        print "session complete rate:" + str(float(complete_session_num) / len(self.sessions))
+        if (len(self.sessions) == 0):
+            print "no sessions!"
+        else:
+            print "session complete rate:" + str(float(complete_session_num) / len(self.sessions))
