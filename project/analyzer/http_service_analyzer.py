@@ -69,6 +69,8 @@ class Http_service_analyzer():
             host_name = self.pcap_container.http_list[session.http_list[0]].header_fields["host"]
         except:
             host_name = "unknown(no_host_field)"
+        if (max_concurrence == 0):
+            max_concurrence = 1
         self.session_tcp_concurrence[host_name] = max_concurrence
         
     def __cal_pipelining_concurrence(self):
@@ -93,6 +95,9 @@ class Http_service_analyzer():
                         self.pipelining[sockets][0] = self.pipelining[sockets][1]
                     self.pipelining[sockets][1] = 0
             pos += 1
+        for socket in self.pipelining.keys():
+            if (self.pipelining[socket][0] == 0):
+                self.pipelining[socket][0] = 1
     
     #TODO: find a website that use multipart to uplaod file to test this method.....
     def __cal_multipart_concurrence(self):
