@@ -98,7 +98,7 @@ def _is_html_uri(uri):
     
     if (uri == None):
         return False
-    pattern = '.+\.(html|htm)$'
+    pattern = '.+\.(html|htm|php)$'
     m = re.match(pattern, uri)
     if (m != None or uri == '/'):
         return True
